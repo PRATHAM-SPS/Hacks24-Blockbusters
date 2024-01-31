@@ -65,7 +65,7 @@ function Hero({ state }) {
             >
               Get Started
             </a>
-            <InvoiceModal showModal={false} closeModal={false} info={states} />
+            <InvoiceModal showModal={true} closeModal={false} info={states} />
           </div>
           <div className="col-md-6 animated fadeIn">
             <div className="owl-carousel-item">

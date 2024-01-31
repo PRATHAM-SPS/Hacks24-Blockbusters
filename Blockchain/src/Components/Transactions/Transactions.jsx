@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import moment from "moment";
-import left from "./left.svg";
+// import left from "./left.svg";
 
 const Transactions = ({ state }) => {
   const params = useParams();
@@ -146,7 +146,7 @@ const TransactionsCard = ({ date, amount, from, to }) => {
     justifyContent: 'space-between',
   }}>
                 <p style={{ margin: "0px", display: "flex", textAlign: "center", alignItems: "center" }}>from &nbsp;<p style={{ margin: "0px", display: "flex", fontWeight: 'bolder', fontSize: 'large' }}> {from}</p></p>
-                <img src={left} alt="" />
+                {/* <img src={left} alt="" /> */}
                 <p style={{ margin: "0px", display: "flex", textAlign: "center", alignItems: "center" }}>to &nbsp;<p style={{ margin: "0px", display: "flex", fontWeight: 'bolder', fontSize: 'large' }}> {to}</p></p>
                 </div>
               </div>
