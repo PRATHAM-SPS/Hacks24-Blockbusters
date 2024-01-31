@@ -20,7 +20,7 @@ function App() {
   });
 
   const saveState = (state) => {
-    console.log(state);
+    // console.log(state);
     setState(state);
   };
 

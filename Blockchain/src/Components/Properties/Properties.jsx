@@ -1,8 +1,12 @@
 import InvoiceModal from '../Agreement/Agreement'
 import { useState, useEffect } from "react";
+import axios from 'axios';
+import { v4 as uuidv4 } from 'uuid';
 
 function Properties({ state }) {
   const [Property, setProperty] = useState("");
+  const [isQr, setIsQr] = useState(false);
+
   const getData = async () => {
     const { contract, web3 } = state;
     const accounts = await web3.eth.getAccounts();
@@ -16,7 +20,9 @@ function Properties({ state }) {
   };
 
   const [transaction, SetTransaction] = useState([]);
-
+  const [seller, setSeller] =useState()
+  const [buyer, setBuyer] =useState()
+ 
   async function getDonor(id) {
     try {
       const { contract, web3 } = state;
@@ -31,6 +37,17 @@ function Properties({ state }) {
     }
   }
 
+  const fetchData = async (Address) => {
+    
+      const response = await axios.get('http://localhost:5000/get_data_by_address', {
+        params: {
+          address: Address// Replace with the actual address
+        }
+      });
+      return response.data; // Set the fetched properties to the state
+    
+  };
+
   const Buy = async(id, value) => {
     const { contract, web3 } = state;
     const accounts = await web3.eth.getAccounts();
@@ -39,17 +56,32 @@ function Properties({ state }) {
     
     const property = await contract.methods.propertyListings(id)
       .call();
-
-    console.log(property)
-
+     const seller = await fetchData( property.seller);
+      const buyer = await  fetchData(accounts[0]);
+      console.log(seller);
+      console.log(buyer);
+    console.log(property);
+    
+    
+const qrcode = uuidv4();
     setStates({
       dateOfIssue: new Date().toLocaleDateString(),
-      billTo: '',
-      billToEmail: '',
-      billToAddress: '',
-      billFrom: '',
-      billFromEmail: '',
-      billFromAddress: '',
+      billTo: buyer[0].name,
+      billToEmail: buyer[0].email,
+      billToAddress: buyer[0].address,
+      billToHAddress: buyer[0].haddress,
+      billToAge:buyer[0].age,
+      billToPin:buyer[0].pin,
+      billToPan:buyer[0].pan,
+      billToAdhar:buyer[0].adhar,
+      billFrom: seller[0].name,
+      billFromEmail: seller[0].email,
+      billFromAddress: seller[0].address,
+      billFromHAddress: seller[0].haddress,
+      billFromAge: seller[0].age,
+      billFromPin: seller[0].pin,
+      billFromPan: seller[0].pan,
+      billFromAdhar: seller[0].adhar,
       propertyAddress: property.propertyLocation,
       propertyPrice: property.propertyPrice,
       propertySqft: property.propertySqft,
@@ -57,13 +89,14 @@ function Properties({ state }) {
       propertyBhk: property.propertyBhk,
       propertyBath: property.propertyBath,
       brokerCut: property.brokerCut,
-      lastOwner: lastOwners ? lastOwners[lastOwners.length - 1].to : ''
+      lastOwner: lastOwners ? lastOwners[lastOwners.length - 1].to : '',
+      qrcode: qrcode
     })
-
     setIsOpen(true);
     await contract.methods
           .buyProperty(Number(id))
           .send({ from: accounts[0], value: value, gas: 480000 });
+     setIsQr(true)
 
   }
 
@@ -90,6 +123,8 @@ function Properties({ state }) {
   useEffect(() => {
     getData();
   }, [state]);
+
+  const closeModal = (event) => this.setState({isOpen: false});
   return (
     <>
       <div class="container-xxl py-5 property">
@@ -141,9 +176,9 @@ function Properties({ state }) {
                             </div>
                             <div class="p-4 pb-0">
                               <h5 class="text-primary mb-3">
-                                {Property[7]} ETH
+                                {Property[7]} ETH + { Property[7] > Property[4] * 3 ? Property[7] * 0.05 : Property[4] * 3 * 0.05} ETH (5% Stamp Duty)
                               </h5>
-                              <a class="d-block h5 mb-2" href="">
+                              <a class="     setQR( qrcode )d-block h5 mb-2" href="">
                                 {Property[2]}
                               </a>
                               <p>
@@ -176,7 +211,7 @@ function Properties({ state }) {
                               >
                                 <i class="bi bi-cart4"></i> Buy Now
                               </button>
-            <InvoiceModal showModal={isOpen} closeModal={false} info={states} />
+                              <InvoiceModal showModal={isOpen} closeModal={closeModal} info={states} isQr={isQr} />
                             </div>
                           </div>
                         </div>

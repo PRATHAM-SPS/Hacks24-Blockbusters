@@ -7,6 +7,7 @@ from sklearn.model_selection import train_test_split
 from sklearn.linear_model import LinearRegression
 import numpy as np
 from graphqlclient import GraphQLClient
+from bson import ObjectId 
 import json
 import math
 
@@ -145,6 +146,34 @@ collection = db['collection']
 def index():
     return "Welcome to the Flask API!"
 
+@app.route('/get_data_by_address', methods=['GET'])
+def get_data_by_address():
+    # Get the address from the request query parameters
+    address = request.args.get('address')
+
+    try:
+        # Query MongoDB collection based on the address field
+        data_cursor = collection.find({'address': address})
+
+        # Convert MongoDB cursor to a list of dictionaries
+        data_list = list(data_cursor)
+
+        # Convert ObjectId fields to strings
+        for doc in data_list:
+            # Convert ObjectId field to string
+            doc['_id'] = str(doc['_id'])
+
+        # Check if any data was found
+        if data_list:
+            # Return the data as JSON
+            return jsonify(data_list)
+        else:
+            # Return a message if no data was found for the given address
+            return jsonify({'message': 'No data found for the provided address.'}), 404
+    except Exception as e:
+        # Return an error message if an exception occurs
+        return jsonify({'error': str(e)}), 500
+    
 @app.route('/login', methods=['POST'])
 def login():
     data = request.get_json()
@@ -172,6 +201,7 @@ def signup():
     pin = data.get('pin')
     pan = data.get('pan')
     adhar =data.get('adhar')
+    haddress = data.get('haddress')
 
     data_to_insert = {
         'email': email,
@@ -181,13 +211,15 @@ def signup():
         'address': address,
         'pin': pin,
         'pan': pan,
-        'adhar': adhar
+        'adhar': adhar,
+        'haddress': haddress
     }
 
     try:
-        check = collection.find_one({'email': email})
+        mail = collection.find_one({'email': email})
+        add =collection.find_one({'address': address})
 
-        if check:
+        if mail or add:
             return jsonify("exist")
         else:
             collection.insert_one(data_to_insert)

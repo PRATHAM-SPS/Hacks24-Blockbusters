@@ -5,7 +5,9 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import left from "./left.svg";
 
+
 const Transactions = ({ state }) => {
+  
   const params = useParams();
   const userId = params.userId;
   const { contract, web3 } = state;
@@ -16,6 +18,7 @@ const Transactions = ({ state }) => {
 
   async function reSell() {
     try {
+      
       console.log("Start Resell");
       console.log(userId, Price);
       const accounts = await web3.eth.getAccounts();

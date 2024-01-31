@@ -2,8 +2,12 @@ import React, { useState, useEffect } from "react";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import Web3 from "web3";
+import Loading from "../loading/Loading";
+
+
 
 function Add_Property({ state }) {
+  const [isLoading, setIsLoading] = useState(false);
   const [img, setImg] = useState("");
   const [name, setName] = useState("");
   const [locations, setLocations] = useState("");
@@ -101,17 +105,31 @@ function Add_Property({ state }) {
   
 
   const submitAndBlock = async (event) => {
+    
     try {
+      setIsLoading(true);
       const imageUrl = await submitImage(event);
       await block(imageUrl);
     } catch (error) {
       console.error(error);
       // Handle errors here
+    }finally {
+      setIsLoading(false); // Set loading state to false after submission
     }
   };  
 
+
+  const [isRR, setIsRR] = useState(true);
+
+  const handleprice = (e) => {
+    const inputValue = e.target.value;
+    setPrice(inputValue);
+    setIsRR(sqft * 3 <= inputValue);
+  };
+
   return (
     <>
+    {isLoading && <Loading />}
       <ToastContainer />
       <div className="container-xxl py-5 predict">
         <div className="container">
@@ -224,12 +242,13 @@ function Add_Property({ state }) {
                           <div className="form-floating">
                             <input
                               type="text"
-                              className="form-control"
+                              className={`form-control ${isRR ? '' : 'is-invalid'}`}
                               id="subject"
                               placeholder="Price"
                               value={price}
-                              onChange={(e) => setPrice(e.target.value)}
+                              onChange={handleprice}
                             />
+                            {!isRR && <div className="invalid-feedback">Warning! Your Value is less than Reckoner Rate of your area</div>}
                             <label htmlFor="subject">Price</label>
                           </div>
                         </div>
