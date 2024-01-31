@@ -70,7 +70,7 @@ function Signup({ state }) {
             })
             .then(res=>{
                 if(res.data=="exist"){
-                    alert("User already exists")
+                    alert("User already exists, Please check your Mail or Account Address ")
                 }
                 else if(res.data=="notexist"){
                     history("/home",{state:{id:email}})

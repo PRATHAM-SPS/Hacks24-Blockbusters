@@ -216,9 +216,10 @@ def signup():
     }
 
     try:
-        check = collection.find_one({'email': email})
+        mail = collection.find_one({'email': email})
+        add =collection.find_one({'address': address})
 
-        if check:
+        if mail or add:
             return jsonify("exist")
         else:
             collection.insert_one(data_to_insert)

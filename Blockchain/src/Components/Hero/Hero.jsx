@@ -37,12 +37,12 @@ function Hero({ state }) {
               Vero elitr justo clita lorem. Ipsum dolor at sed stet sit diam no.
               Kasd rebum ipsum et diam justo clita et kasd rebum sea elitr.
             </p>
-            <a
-              href=""
+            <Link
+              to="/"
               className="btn btn-primary py-3 px-5 me-3 animated fadeIn"
             >
               Get Started
-            </a>
+            </Link>
           </div>
           <div className="col-md-6 animated fadeIn">
             <div className="owl-carousel-item">
