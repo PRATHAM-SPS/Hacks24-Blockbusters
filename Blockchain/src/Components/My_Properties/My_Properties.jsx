@@ -12,7 +12,14 @@ function My_Properties({ state }) {
       .getOwnedProperties(accounts[0])
       .call();
     const filteredProperties = AllAvailableProperties.filter(property => property.seller === accounts[0]);
-    setProperty(filteredProperties);
+    const seenPropertyIds = {};
+    const uniqueProperties = AllAvailableProperties.filter(property => {
+      const isNotSeen = !seenPropertyIds[property.propertyId] && property.seller === accounts[0]; 
+      seenPropertyIds[property.propertyId] = true;
+      return isNotSeen;
+    });
+    console.log("AaAAaAAa",uniqueProperties);
+    setProperty(uniqueProperties);
     console.log(AllAvailableProperties[0][9]);
     console.log(accounts[0]);
   };
