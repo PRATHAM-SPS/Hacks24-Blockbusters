@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 import { useState, useEffect } from "react";
+import InvoiceModal from '../Agreement/Agreement'
 
 function Hero({ state }) {
   const [Property, setProperty] = useState("");
@@ -19,6 +20,27 @@ function Hero({ state }) {
           .buyProperty(Number(id))
           .send({ from: accounts[0], value: value, gas: 480000 });
   }
+
+  const states = {
+    isOpen: false,
+    currency: '$',
+    currentDate: '',
+    invoiceNumber: 1,
+    dateOfIssue: '',
+    billTo: '',
+    billToEmail: '',
+    billToAddress: '',
+    billFrom: '',
+    billFromEmail: '',
+    billFromAddress: '',
+    notes: '',
+    total: '0.00',
+    subTotal: '0.00',
+    taxRate: '',
+    taxAmmount: '0.00',
+    discountRate: '',
+    discountAmmount: '0.00'
+  };
 
   useEffect(() => {
     getData();
@@ -43,6 +65,7 @@ function Hero({ state }) {
             >
               Get Started
             </a>
+            <InvoiceModal showModal={true} closeModal={false} info={states} />
           </div>
           <div className="col-md-6 animated fadeIn">
             <div className="owl-carousel-item">
