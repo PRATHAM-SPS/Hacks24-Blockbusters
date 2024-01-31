@@ -106,13 +106,13 @@ class InvoiceModal extends React.Component {
                 </thead>
                 <tbody>
                   <tr style={{width: '100px', fontSize: '14px'}}>
-                    THIS DEED OF TRANSFER made at Mumbai, this {this.props.info.dateOfIssue} BETWEEN MR/Mrs.<b>{this.props.info.billFrom ||''}</b> age <b>{this.props.info.billFrom ||''} </b> years, an Indian Inhabitant, residing at ……5…….Flat no. / village / city  pin code………6…. PanNo…7….. Adara Id ….8…  .hereinafter called <b>"THE TRANSFEROR"</b> (which expression shall unless it be repugnant to the context or meaning thereof mean and include his heirs, executors and administrators) of the ONE PART: 
+                    THIS DEED OF TRANSFER made at Mumbai, this {this.props.info.dateOfIssue} BETWEEN MR/Mrs:- <b>{this.props.info.billFrom||''}</b> age:- <b>{this.props.info.billFromAge ||''} </b> years, an Indian Inhabitant, residing at <b>{this.props.info.billFromHAddress ||''}</b>  city  pin code:- <b>{this.props.info.billFromPin ||''}</b>  PanNo:- <b>{this.props.info.billFromPan ||''}</b>  Adara Id:- <b>{this.props.info.billFromAdhar ||''}</b>  hereinafter called <b>"THE TRANSFEROR"</b> (which expression shall unless it be repugnant to the context or meaning thereof mean and include his heirs, executors and administrators) of the ONE PART: 
                   </tr>
                   <tr>
                     <b style={{alignContent: 'center'}} className='m-10'>AND</b>
                   </tr>
                   <tr style={{width: '100px', fontSize: '14px'}}>
-                    MR/Mrs<b>{this.props.info.billTo||''}</b> age .10. years an Indian Inhabitant, residing at …….11…..Flat no / village / city  pin code ……6……. PanNo…7….. Adara Id ….8…   hereinafter called <b>"THE TRANSFEREE</b>" (which expression shall unless it be repugnant to the context or meaning thereof mean and include her heirs, executors, administrators and assigns) of the OTHER  PART 
+                    MR/Mrs:- <b>{this.props.info.billTo||''}</b> age:- <b>{this.props.info.billToAge||''}</b>  years an Indian Inhabitant, residing at <b>{this.props.info.billToHAddress||''}</b>  pin code:- <b>{this.props.info.billToPin ||''}</b>  PanNo:- <b>{this.props.info.billToPan ||''}</b>  Adara Id:- <b>{this.props.info.billToAdhar||''}</b>    hereinafter called <b>"THE TRANSFEREE</b>" (which expression shall unless it be repugnant to the context or meaning thereof mean and include her heirs, executors, administrators and assigns) of the OTHER  PART 
                   </tr>
                   <hr></hr>
                   <tr style={{width: '100px', fontSize: '14px'}}>
