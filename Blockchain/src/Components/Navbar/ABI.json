@@ -169,6 +169,24 @@
 		"type": "event"
 	},
 	{
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "_id",
+				"type": "uint256"
+			},
+			{
+				"internalType": "string",
+				"name": "img",
+				"type": "string"
+			}
+		],
+		"name": "savePropertyDocument",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
 		"inputs": [],
 		"name": "getAllAvailableProperties",
 		"outputs": [
@@ -352,6 +370,11 @@
 						"type": "address"
 					},
 					{
+						"internalType": "address",
+						"name": "broker",
+						"type": "address"
+					},
+					{
 						"internalType": "uint256",
 						"name": "value",
 						"type": "uint256"
@@ -373,6 +396,25 @@
 				"internalType": "address",
 				"name": "",
 				"type": "address"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"name": "Property_Document",
+		"outputs": [
+			{
+				"internalType": "string",
+				"name": "",
+				"type": "string"
 			}
 		],
 		"stateMutability": "view",
@@ -493,6 +535,11 @@
 			{
 				"internalType": "address",
 				"name": "to",
+				"type": "address"
+			},
+			{
+				"internalType": "address",
+				"name": "broker",
 				"type": "address"
 			},
 			{
