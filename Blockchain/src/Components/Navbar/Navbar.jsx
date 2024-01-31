@@ -32,7 +32,7 @@ function Navbar({ saveState }) {
     <div className="container-fluid nav-bar bg-transparent">
       <nav className="navbar navbar-expand-lg bg-white navbar-light py-0 px-4">
         <Link
-          to="/"
+          to="/home"
           className="navbar-brand d-flex align-items-center text-center"
         >
           <div className="icon p-2 me-2">
@@ -55,7 +55,7 @@ function Navbar({ saveState }) {
         </button>
         <div className="collapse navbar-collapse" id="navbarCollapse">
           <div className="navbar-nav ms-auto">
-            <Link to="/" className="nav-item nav-link active">
+            <Link to="/home" className="nav-item nav-link active">
               Home
             </Link>
             <Link to="/properties" className="nav-item nav-link">
