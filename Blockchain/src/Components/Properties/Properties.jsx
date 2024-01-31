@@ -176,7 +176,7 @@ function Properties({ state }) {
                               >
                                 <i class="bi bi-cart4"></i> Buy Now
                               </button>
-            <InvoiceModal showModal={isOpen} closeModal={false} info={states} />
+                              <InvoiceModal showModal={isOpen} closeModal={false} info={states} />
                             </div>
                           </div>
                         </div>
