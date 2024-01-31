@@ -1,0 +1,34 @@
+# Node.js / React
+node_modules/
+build/
+/.vscode
+.DS_Store
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# Flask
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.db
+*.sqlite
+instance/
+.env
+
+# Editor/IDE specific files
+.idea/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw*
+
+# Dependency directories
+bower_components/
+jspm_packages/
+
+# Distribution
+dist/
