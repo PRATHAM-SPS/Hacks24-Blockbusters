@@ -1,5 +1,7 @@
 # Node.js / React
 node_modules/
+/Blockchain/node_modules/
+Blockchain/node_modules/
 build/
 /.vscode
 .DS_Store
