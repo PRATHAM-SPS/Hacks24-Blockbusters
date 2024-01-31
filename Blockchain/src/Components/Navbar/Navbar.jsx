@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import ABI from "./ABI.json";
 import Web3 from "web3";
+// import { v4 as uuidv4 } from 'uuid';
 
 function Navbar({ saveState }) {
   const [connected, setConnected] = useState(true);
@@ -18,15 +19,16 @@ function Navbar({ saveState }) {
       );
       saveState({ web3: web3, contract: contract });
       setConnected(false);
+      // console.log("QR",uuidv4());
       // console.log(contract);
     } catch (err) {
       console.log(err);
     }
   };
 
-  useEffect(()=>{
-    init();
-  })
+  // useEffect(()=>{
+  //   init();
+  // })
 
   return (
     <div className="container-fluid nav-bar bg-transparent" style={{ zIndex: "1" }}>
