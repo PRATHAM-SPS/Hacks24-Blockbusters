@@ -95,6 +95,15 @@ function Add_Property({ state }) {
     }
   };  
 
+
+  const [isRR, setIsRR] = useState(true);
+
+  const handleprice = (e) => {
+    const inputValue = e.target.value;
+    setPrice(inputValue);
+    setIsRR(sqft * 3 <= inputValue);
+  };
+
   return (
     <>
     {isLoading && <Loading />}
@@ -210,12 +219,13 @@ function Add_Property({ state }) {
                           <div className="form-floating">
                             <input
                               type="text"
-                              className="form-control"
+                              className={`form-control ${isRR ? '' : 'is-invalid'}`}
                               id="subject"
                               placeholder="Price"
                               value={price}
-                              onChange={(e) => setPrice(e.target.value)}
+                              onChange={handleprice}
                             />
+                            {!isRR && <div className="invalid-feedback">Warning! Your Value is less than Reckoner Rate of your area</div>}
                             <label htmlFor="subject">Price</label>
                           </div>
                         </div>
