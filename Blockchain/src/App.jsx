@@ -29,8 +29,8 @@ function App() {
       <Navbar saveState={saveState}/>
       <Routes>
           <Route path="/login" element={<Login/>}/>
-          <Route path="/signup" element={<Signup/>}/>
-        <Route path="/" element={<Hero state={state} />} />
+          <Route path="/" element={<Signup/>}/>
+        <Route path="/home" element={<Hero state={state} />} />
         <Route path="/add" element={<Add_Property state={state} />} />
         <Route path="transactions">
           <Route path=":userId" element={<Transactions state={state} />} />
