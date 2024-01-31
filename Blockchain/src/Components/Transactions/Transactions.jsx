@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import moment from "moment";
-// import left from "./left.svg";
+import left from "./left.svg";
 
 const Transactions = ({ state }) => {
   const params = useParams();
