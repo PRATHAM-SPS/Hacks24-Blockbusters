@@ -1,5 +1,6 @@
 import InvoiceModal from '../Agreement/Agreement'
 import { useState, useEffect } from "react";
+import axios from 'axios';
 
 function Properties({ state }) {
   const [Property, setProperty] = useState("");
@@ -16,7 +17,9 @@ function Properties({ state }) {
   };
 
   const [transaction, SetTransaction] = useState([]);
-
+  const [seller, setSeller] =useState()
+  const [buyer, setBuyer] =useState()
+ 
   async function getDonor(id) {
     try {
       const { contract, web3 } = state;
@@ -31,6 +34,17 @@ function Properties({ state }) {
     }
   }
 
+  const fetchData = async (Address) => {
+    
+      const response = await axios.get('http://localhost:5000/get_data_by_address', {
+        params: {
+          address: Address// Replace with the actual address
+        }
+      });
+      return response.data; // Set the fetched properties to the state
+    
+  };
+
   const Buy = async(id, value) => {
     const { contract, web3 } = state;
     const accounts = await web3.eth.getAccounts();
@@ -39,17 +53,22 @@ function Properties({ state }) {
     
     const property = await contract.methods.propertyListings(id)
       .call();
-
-    console.log(property)
+     const seller = await fetchData( property.seller);
+      const buyer = await  fetchData(accounts[0]);
+      console.log(seller);
+      console.log(buyer);
+    console.log(property);
 
     setStates({
       dateOfIssue: new Date().toLocaleDateString(),
-      billTo: '',
-      billToEmail: '',
-      billToAddress: '',
-      billFrom: '',
-      billFromEmail: '',
-      billFromAddress: '',
+      billTo: buyer[0].name,
+      billToEmail: buyer[0].email,
+      billToAddress: buyer[0].address,
+      billToHAddress: buyer[0].haddress,
+      billFrom: seller[0].name,
+      billFromEmail: seller[0].email,
+      billFromAddress: seller[0].address,
+      billFromHAddress: seller[0].haddress,
       propertyAddress: property.propertyLocation,
       propertyPrice: property.propertyPrice,
       propertySqft: property.propertySqft,

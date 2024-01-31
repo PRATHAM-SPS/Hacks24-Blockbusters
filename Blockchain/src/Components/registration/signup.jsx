@@ -37,13 +37,14 @@ function Signup({ state }) {
     const [pin,setPin]=useState('')
     const [pan,setPan]=useState('')
     const [adhar,setAdhar]=useState('')
+    const [haddress, setHaddress]=useState('')
     async function submit(e){
         e.preventDefault();
 
         try{
 
             await axios.post("http://localhost:5000/signup",{
-                email,password,name,age,address,pin,pan,adhar
+                email,password,name,age,address,pin,pan,adhar,haddress
             })
             .then(res=>{
                 if(res.data=="exist"){
@@ -68,9 +69,9 @@ function Signup({ state }) {
 
 
     return (
-        <div className="login">
-<div className="container-xxl py-5 predict">
-  <div className="container">
+<div className="login">
+    <div className="container-xxl py-5 predict">
+    <div className="container">
     <div
       className="text-center mx-auto mb-5 wow fadeInUp"
       data-wow-delay="0.1s"
@@ -90,6 +91,7 @@ function Signup({ state }) {
                 <div className="row g-3">
                   <div className="col-12">
                     <input
+                    required
                       type="email"
                       className="form-control"
                       id="email"
@@ -99,6 +101,7 @@ function Signup({ state }) {
                   </div>
                   <div className="col-12">
                     <input
+                    required
                       type="password"
                       className="form-control"
                       id="password"
@@ -108,6 +111,7 @@ function Signup({ state }) {
                   </div>
                   <div className="col-12">
                     <input
+                    required
                       type="text"
                       className="form-control"
                       id="name"
@@ -117,6 +121,7 @@ function Signup({ state }) {
                   </div>
                   <div className="col-12">
                     <input
+                    required
                       type="text"
                       className="form-control"
                       id="age"
@@ -126,16 +131,28 @@ function Signup({ state }) {
                   </div>
                   <div className="col-12">
                     <input
+                    required
+                      type="text"
+                      className="form-control"
+                      id="haddress"
+                      placeholder="Home Address"
+                      onChange={(e) => {setHaddress(e.target.value)}}
+                    />
+                  </div>
+                  <div className="col-12">
+                    <input
                     readonly
+                    required
                       type="text"
                       className="form-control"
                       id="address"
-                      placeholder="Click on Connect Metamask to fetch Address automaticaly"
+                      placeholder="Click on Connect Metamask to fetch Account Address automaticaly"
                       value={address}
                     />
                   </div>
                   <div className="col-12">
                     <input
+                    required
                       type="text"
                       className="form-control"
                       id="pin"
@@ -145,6 +162,7 @@ function Signup({ state }) {
                   </div>
                   <div className="col-12">
                     <input
+                    required
                       type="text"
                       className="form-control"
                       id="pan"
@@ -154,6 +172,7 @@ function Signup({ state }) {
                   </div>
                   <div className="col-12">
                     <input
+                    required
                       type="text"
                       className="form-control"
                       id="adhar"
