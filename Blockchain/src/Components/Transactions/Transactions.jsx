@@ -6,9 +6,25 @@ import left from "./left.svg";
 const Transactions = ({ state }) => {
   const params = useParams();
   const userId = params.userId;
-  const { contract } = state;
+  const { contract, web3 } = state;
   const [Detail, setDetail] = useState("");
   const [Transaction, SetTransaction] = useState([]);
+
+  const [Price, setPrice] = useState();
+
+  async function reSell() {
+    try {
+      console.log("Start Resell");
+      console.log(userId, Price);
+      const accounts = await web3.eth.getAccounts();
+      await contract.methods
+      .reSell(userId, Number(Price))
+      .send({ from : accounts[0] });
+      console.log("Success Resell");
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
+  }
 
   function timeConvertor(time) {
     const timestampInMilliseconds = time * 1000;
@@ -101,15 +117,16 @@ const Transactions = ({ state }) => {
                   id="email"
                   className="form-control"
                   placeholder="Re-Sell Value"
-                  // value={sqft}
-                  // onChange={(e) => setSqft(e.target.value)}
+                  value={Price}
+                  onChange={(e) => setPrice(e.target.value)}
                 />
                 <label htmlFor="email">Re-Sell Value</label>
-                <div
+                <button
                   className="btn btn-primary px-3 d-none d-lg-flex mt-3"
+                  onClick={reSell}
                 >
                   Resell
-                </div>
+                </button>
               </div>
             </div>
           </div>

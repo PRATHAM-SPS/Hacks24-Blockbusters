@@ -14,7 +14,7 @@ function Navbar({ saveState }) {
       });
       const contract = new web3.eth.Contract(
         ABI,
-        "0x13C0A9e25e2Cf7F58ee5E5a6a3F4dAe14742Ff78"
+        "0x47d6D3d0f3d999A0CE34F0Df5F832f2c3A067Be0"
       );
       saveState({ web3: web3, contract: contract });
       setConnected(false);
@@ -23,6 +23,10 @@ function Navbar({ saveState }) {
       console.log(err);
     }
   };
+
+  useEffect(()=>{
+    init();
+  })
 
   return (
     <div className="container-fluid nav-bar bg-transparent">

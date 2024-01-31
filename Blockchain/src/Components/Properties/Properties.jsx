@@ -4,11 +4,14 @@ import { useState, useEffect } from "react";
 function Properties({ state }) {
   const [Property, setProperty] = useState("");
   const getData = async () => {
-    const { contract } = state;
+    const { contract, web3 } = state;
+    const accounts = await web3.eth.getAccounts();
     const AllAvailableProperties = await contract.methods
       .getAllAvailableProperties()
       .call();
-    setProperty(AllAvailableProperties);
+
+    const filteredProperties = AllAvailableProperties.filter(property => property.seller !== accounts[0]);
+    setProperty(filteredProperties);
     console.log(AllAvailableProperties);
   };
 
