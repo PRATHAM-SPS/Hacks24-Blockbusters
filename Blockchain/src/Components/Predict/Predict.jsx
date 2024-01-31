@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
+import Loading from "../loading/Loading";
 
 function Predict() {
+  const [isLoading, setIsLoading] = useState(false);
   const [sqft, setSqft] = useState("");
   const [bhk, setBhk] = useState("");
   const [bath, setBath] = useState("");
@@ -30,6 +32,7 @@ function Predict() {
 
   const handlePrediction = async (event) => {
     event.preventDefault();
+    setIsLoading(true);
     try {
       const response = await axios.get(
         `http://127.0.0.1:5000/prediction/${selectedLocation}/${sqft}/${bhk}/${bath}`
@@ -38,11 +41,14 @@ function Predict() {
       setPrediction(response.data);
     } catch (error) {
       console.error("Error:", error);
+    }finally {
+      setIsLoading(false); 
     }
   };
 
   return (
     <>
+    {isLoading && <Loading />}
       <div className="container-xxl py-5 predict">
         <div className="container">
           <div

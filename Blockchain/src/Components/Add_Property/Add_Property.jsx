@@ -2,8 +2,12 @@ import React, { useState, useEffect } from "react";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import Web3 from "web3";
+import Loading from "../loading/Loading";
+
+
 
 function Add_Property({ state }) {
+  const [isLoading, setIsLoading] = useState(false);
   const [img, setImg] = useState("");
   const [name, setName] = useState("");
   const [locations, setLocations] = useState("");
@@ -78,12 +82,16 @@ function Add_Property({ state }) {
   
 
   const submitAndBlock = async (event) => {
+    
     try {
+      setIsLoading(true);
       const imageUrl = await submitImage(event);
       await block(imageUrl);
     } catch (error) {
       console.error(error);
       // Handle errors here
+    }finally {
+      setIsLoading(false); // Set loading state to false after submission
     }
   };  
 
@@ -98,6 +106,7 @@ function Add_Property({ state }) {
 
   return (
     <>
+    {isLoading && <Loading />}
       <ToastContainer />
       <div className="container-xxl py-5 predict">
         <div className="container">
