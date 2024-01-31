@@ -76,24 +76,28 @@ class InvoiceModal extends React.Component {
               </div>
             </div>
             <div className="p-4">
+            <Row className="mb-4">
+  <Col md={8} className="d-flex justify-content-between">
+    <div>
+      <div className="fw-bold">Transferred From:</div>
+      <div>{this.props.info.billFrom || ''}</div>
+      <div>{this.props.info.billFromAddress || ''}</div>
+      <div>{this.props.info.billFromEmail || ''}</div>
+    </div>
+    <div className="text-end">
+      <div className="fw-bold">Date Of Issue:</div>
+      <div>{this.props.info.dateOfIssue || ''}</div>
+    </div>
+  </Col>
+</Row>
               <Row className="mb-4">
-                <Col md={4}>
-                  <div className="fw-bold">Transferred From:</div>
-                  <div>{this.props.info.billFrom||''}</div>
-                  <div>{this.props.info.billFromAddress||''}</div>
-                  <div>{this.props.info.billFromEmail||''}</div>
-                </Col>
-                <Col md={4}>
+              <Col md={4}>
                   <div className="fw-bold">Transferred to:</div>
                   <div>{this.props.info.billTo||''}</div>
                   <div>{this.props.info.billToAddress||''}</div>
                   <div>{this.props.info.billToEmail||''}</div>
-                </Col>
-                <Col md={4}>
-                  <div className="fw-bold mt-2">Date Of Issue:</div>
-                  <div>{this.props.info.dateOfIssue||''}</div>
-                </Col>
-              </Row>
+                  </Col>
+                </Row>
               <Table className="mb-0">
                 <thead>
                   <tr>
@@ -102,13 +106,13 @@ class InvoiceModal extends React.Component {
                 </thead>
                 <tbody>
                   <tr style={{width: '100px', fontSize: '14px'}}>
-                    THIS DEED OF TRANSFER made at Mumbai, this {this.props.info.dateOfIssue} BETWEEN MR/Mrs. ………3……..age .4.  years, an Indian Inhabitant, residing at ……5…….Flat no. / village / city  pin code………6…. PanNo…7….. Adara Id ….8…  .hereinafter called <b>"THE TRANSFEROR"</b> (which expression shall unless it be repugnant to the context or meaning thereof mean and include his heirs, executors and administrators) of the ONE PART: 
+                    THIS DEED OF TRANSFER made at Mumbai, this {this.props.info.dateOfIssue} BETWEEN MR/Mrs.<b>{this.props.info.billFrom ||''}</b> age <b>{this.props.info.billFrom ||''} </b> years, an Indian Inhabitant, residing at ……5…….Flat no. / village / city  pin code………6…. PanNo…7….. Adara Id ….8…  .hereinafter called <b>"THE TRANSFEROR"</b> (which expression shall unless it be repugnant to the context or meaning thereof mean and include his heirs, executors and administrators) of the ONE PART: 
                   </tr>
                   <tr>
                     <b style={{alignContent: 'center'}} className='m-10'>AND</b>
                   </tr>
                   <tr style={{width: '100px', fontSize: '14px'}}>
-                    MR/Mrs. ………9……..age .10. years an Indian Inhabitant, residing at …….11…..Flat no / village / city  pin code ……6……. PanNo…7….. Adara Id ….8…   hereinafter called <b>"THE TRANSFEREE</b>" (which expression shall unless it be repugnant to the context or meaning thereof mean and include her heirs, executors, administrators and assigns) of the OTHER  PART 
+                    MR/Mrs<b>{this.props.info.billTo||''}</b> age .10. years an Indian Inhabitant, residing at …….11…..Flat no / village / city  pin code ……6……. PanNo…7….. Adara Id ….8…   hereinafter called <b>"THE TRANSFEREE</b>" (which expression shall unless it be repugnant to the context or meaning thereof mean and include her heirs, executors, administrators and assigns) of the OTHER  PART 
                   </tr>
                   <hr></hr>
                   <tr style={{width: '100px', fontSize: '14px'}}>
