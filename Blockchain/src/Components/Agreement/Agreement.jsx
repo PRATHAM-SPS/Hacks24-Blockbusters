@@ -10,41 +10,49 @@ import html2canvas from 'html2canvas';
 import jsPDF from 'jspdf'
 
 function GenerateInvoice() {
-  html2canvas(document.querySelector("#invoiceCapture")).then((canvas) => {
-    const imgData = canvas.toDataURL('image/png', 1.0);
-    const pdf = new jsPDF({
-      orientation: 'portrait',
-      unit: 'pt',
-      format: [612, 792]
-    });
-    pdf.internal.scaleFactor = 1;
-    
-    const imgProps = pdf.getImageProperties(imgData);
-    const pdfWidth = pdf.internal.pageSize.getWidth();
-    const pdfHeight = (imgProps.height * pdfWidth) / imgProps.width;
-    
-    let position = 0;
-
-    while (position < imgProps.height) {
-      // Calculate the remaining height to fit in the current page
-      const remainingHeight = Math.min(pdf.internal.pageSize.getHeight() - position, pdfHeight - position);
-      
-      // Add a new page if needed
-      if (position > 0) {
-        pdf.addPage();
+    const element = document.querySelector("#invoiceCapture");
+  
+    html2canvas(element, { scrollY: -window.scrollY }).then((canvas) => {
+      const imgData = canvas.toDataURL('image/png', 1.0);
+      const pdf = new jsPDF({
+        orientation: 'portrait',
+        unit: 'pt',
+        format: [612, 792]
+      });
+  
+      const imgWidth = 612;
+      const imgHeight = (canvas.height * imgWidth) / canvas.width;
+  
+      let position = 0;
+      let pageHeight = pdf.internal.pageSize.getHeight();
+  
+      while (position < imgHeight) {
+        const sliceHeight = Math.min(imgHeight - position, pageHeight);
+        pdf.addImage(
+          imgData,
+          'PNG',
+          0,
+          -position,
+          imgWidth,
+          imgHeight,
+          null,
+          'SLOW', // 'SLOW' option enables rendering the image with clipping
+          'MEDIUM',
+          0,
+          true
+        );
+        position += sliceHeight;
+  
+        if (position < imgHeight) {
+          pdf.addPage();
+        }
       }
-
-      // Add the image to the current page
-      pdf.addImage(imgData, 'PNG', 0, -position, pdfWidth, pdfHeight);
-      
-      // Move to the next position
-      position += remainingHeight;
-    }
-
-    pdf.save('invoice-001.pdf');
-  });
-}
-
+  /
+      pdf.save('invoice-001.pdf');
+    });
+  }
+  
+  
   
 
 class InvoiceModal extends React.Component {
