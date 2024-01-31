@@ -95,6 +95,22 @@ const Transactions = ({ state }) => {
               <i class="bi bi-tag-fill text-primary me-2"></i>
                 {Detail[7]} ETH
               </p>
+              <div className="form-floating">
+                <input
+                  type="text"
+                  id="email"
+                  className="form-control"
+                  placeholder="Re-Sell Value"
+                  // value={sqft}
+                  // onChange={(e) => setSqft(e.target.value)}
+                />
+                <label htmlFor="email">Re-Sell Value</label>
+                <div
+                  className="btn btn-primary px-3 d-none d-lg-flex mt-3"
+                >
+                  Resell
+                </div>
+              </div>
             </div>
           </div>
         </div>
