@@ -18,7 +18,7 @@ function Navbar({ saveState }) {
       );
       saveState({ web3: web3, contract: contract });
       setConnected(false);
-      console.log(contract);
+      // console.log(contract);
     } catch (err) {
       console.log(err);
     }

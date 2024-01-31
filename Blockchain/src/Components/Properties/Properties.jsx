@@ -168,7 +168,7 @@ function Properties({ state }) {
                             </div>
                             <div class="p-4 pb-0">
                               <h5 class="text-primary mb-3">
-                                {Property[7]} ETH
+                                {Property[7]} ETH + { Property[7] > Property[4] * 3 ? Property[7] * 0.05 : Property[4] * 3 * 0.05} ETH (5% Stamp Duty)
                               </h5>
                               <a class="d-block h5 mb-2" href="">
                                 {Property[2]}

@@ -65,7 +65,6 @@ function Signup({ state }) {
         e.preventDefault();
 
         try{
-
             await axios.post("http://localhost:5000/signup",{
                 email,password,name,age,address,pin,pan,adhar,haddress
             })
@@ -81,13 +80,10 @@ function Signup({ state }) {
                 alert("wrong details")
                 console.log(e);
             })
-
         }
         catch(e){
             console.log(e);
-
         }
-
     }
 
 
