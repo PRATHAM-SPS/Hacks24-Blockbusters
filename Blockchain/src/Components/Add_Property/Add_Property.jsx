@@ -50,10 +50,16 @@ function Add_Property({ state }) {
       const web3 = new Web3(window.ethereum);
       const accounts = await web3.eth.getAccounts();
       console.log(accounts[0]);
-      await contract.methods
-        .createPropertyListing(imageUrl, name, locations, sqft, bhk, bath, price)
+      if(hasBroker == false) {
+        await contract.methods
+        .createPropertyListingWithoutBroker(imageUrl, name, locations, sqft, bhk, bath, price)
         .send({ from: accounts[0] });
-        toast.success(`Your property is now registered.`, {
+      } else {
+        await contract.methods
+        .createPropertyListingWithBroker(imageUrl, name, locations, sqft, bhk, bath, price, brokerId, percentageCut)
+        .send({ from: accounts[0] });
+      }
+        toast.success("Your property is now registered.", {
           position: "top-right",
           autoClose: 5000,
           hideProgressBar: false,
@@ -242,11 +248,11 @@ function Add_Property({ state }) {
                                   type="text"
                                   className="form-control"
                                   id="brokerId"
-                                  placeholder="Broker ID"
+                                  placeholder="Broker Address"
                                   value={brokerId}
                                   onChange={(e) => setBrokerId(e.target.value)}
                                 />
-                                <label htmlFor="brokerId">Broker ID</label>
+                                <label htmlFor="brokerId">Seller Address</label>
                               </div>
                             </div>
                             <div className="col-12">
@@ -255,11 +261,11 @@ function Add_Property({ state }) {
                                   type="text"
                                   className="form-control"
                                   id="percentageCut"
-                                  placeholder="Percentage Cut"
+                                  placeholder="Broker Cut"
                                   value={percentageCut}
                                   onChange={(e) => setPercentageCut(e.target.value)}
                                 />
-                                <label htmlFor="percentageCut">Percentage Cut</label>
+                                <label htmlFor="percentageCut">Broker Cut</label>
                               </div>
                             </div>
                           </>
