@@ -11,7 +11,8 @@ function My_Properties({ state }) {
     const AllAvailableProperties = await contract.methods
       .getOwnedProperties(accounts[0])
       .call();
-    setProperty(AllAvailableProperties);
+    const filteredProperties = AllAvailableProperties.filter(property => property.seller === accounts[0]);
+    setProperty(filteredProperties);
     console.log(AllAvailableProperties[0][9]);
     console.log(accounts[0]);
   };
