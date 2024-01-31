@@ -54,6 +54,7 @@ function GenerateInvoice() {
   
   
 
+
 class InvoiceModal extends React.Component {
   // constructor(props) {
   //   super(props);
@@ -62,10 +63,10 @@ class InvoiceModal extends React.Component {
     return(
       <div>
         <Modal show={this.props.showModal} onHide={this.props.closeModal} size="lg" centered>
-          <div id="invoiceCapture">
+          <div id="invoiceCapture" style={{ zIndex: "100" }}>
             <div className="d-flex flex-row justify-content-between align-items-start bg-light w-100 p-4">
               <div className="w-100">
-                <h4 className="fw-bold my-2">{this.props.info.billFrom||'John Uberbacher'}</h4>
+                <h4 className="fw-bold my-2">{this.props.info.billFro||'Deed of Transfer'}</h4>
                 <h6 className="fw-bold text-secondary mb-1">
                   Invoice #: {this.props.info.invoiceNumber||''}
                 </h6>
@@ -99,12 +100,8 @@ class InvoiceModal extends React.Component {
                   </Col>
                 </Row>
               <Table className="mb-0">
-                <thead>
-                  <tr>
-                    <th style={{fontSize: '18px'}}>Deed of Transfer</th>
-                  </tr>
-                </thead>
                 <tbody>
+                  <hr></hr>
                   <tr style={{width: '100px', fontSize: '14px'}}>
                     THIS DEED OF TRANSFER made at Mumbai, this {this.props.info.dateOfIssue} BETWEEN MR/Mrs:- <b>{this.props.info.billFrom||''}</b> age:- <b>{this.props.info.billFromAge ||''} </b> years, an Indian Inhabitant, residing at <b>{this.props.info.billFromHAddress ||''}</b>  city  pin code:- <b>{this.props.info.billFromPin ||''}</b>  PanNo:- <b>{this.props.info.billFromPan ||''}</b>  Adara Id:- <b>{this.props.info.billFromAdhar ||''}</b>  hereinafter called <b>"THE TRANSFEROR"</b> (which expression shall unless it be repugnant to the context or meaning thereof mean and include his heirs, executors and administrators) of the ONE PART: 
                   </tr>
@@ -198,6 +195,12 @@ class InvoiceModal extends React.Component {
                   </tr>
                   <tr style={{width: '100px', fontSize: '14px', marginBottom: '10px'}}>
                     16.	The <b>TRANSFEROR</b> shall from time to time and at all reasonable times do and execute or cause to be done and executed all such acts, deeds and things whatsoever for more perfectly securing the right, title and interest of the TRANSFEROR in the said Premises agreed to be sold and transferred unto and to the use of the <b>TRANSFEREE</b>.
+                  </tr>
+                  <tr style={{width: '100px', fontSize: '14px', marginBottom: '10px'}}>
+                      <br></br>
+                  </tr>
+                  <tr style={{width: '100px', fontSize: '14px', marginBottom: '10px'}}>
+                  <img src="img_girl.jpg" alt="Girl in a jacket" width="500" height="600"></img>
                   </tr>
                 </tbody>
               </Table>

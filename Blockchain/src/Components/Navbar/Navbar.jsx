@@ -29,7 +29,7 @@ function Navbar({ saveState }) {
   })
 
   return (
-    <div className="container-fluid nav-bar bg-transparent">
+    <div className="container-fluid nav-bar bg-transparent" style={{ zIndex: "1" }}>
       <nav className="navbar navbar-expand-lg bg-white navbar-light py-0 px-4">
         <Link
           to="/home"
