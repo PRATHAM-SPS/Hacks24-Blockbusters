@@ -1,0 +1,347 @@
+[
+	{
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "propertyListingId",
+				"type": "uint256"
+			}
+		],
+		"name": "buyProperty",
+		"outputs": [],
+		"stateMutability": "payable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "string",
+				"name": "imageUrl",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "propertyTitle",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "propertyLocation",
+				"type": "string"
+			},
+			{
+				"internalType": "uint256",
+				"name": "propertySqft",
+				"type": "uint256"
+			},
+			{
+				"internalType": "uint256",
+				"name": "propertyBhk",
+				"type": "uint256"
+			},
+			{
+				"internalType": "uint256",
+				"name": "propertyBath",
+				"type": "uint256"
+			},
+			{
+				"internalType": "uint256",
+				"name": "propertyPrice",
+				"type": "uint256"
+			}
+		],
+		"name": "createPropertyListing",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"anonymous": false,
+		"inputs": [
+			{
+				"indexed": false,
+				"internalType": "string",
+				"name": "location",
+				"type": "string"
+			},
+			{
+				"indexed": false,
+				"internalType": "uint256",
+				"name": "total_sqft",
+				"type": "uint256"
+			},
+			{
+				"indexed": false,
+				"internalType": "uint256",
+				"name": "bath",
+				"type": "uint256"
+			},
+			{
+				"indexed": false,
+				"internalType": "uint256",
+				"name": "price",
+				"type": "uint256"
+			},
+			{
+				"indexed": false,
+				"internalType": "uint256",
+				"name": "bhk",
+				"type": "uint256"
+			}
+		],
+		"name": "registeredProperty",
+		"type": "event"
+	},
+	{
+		"inputs": [],
+		"name": "getAllAvailableProperties",
+		"outputs": [
+			{
+				"components": [
+					{
+						"internalType": "uint256",
+						"name": "propertyId",
+						"type": "uint256"
+					},
+					{
+						"internalType": "string",
+						"name": "imageUrl",
+						"type": "string"
+					},
+					{
+						"internalType": "string",
+						"name": "propertyTitle",
+						"type": "string"
+					},
+					{
+						"internalType": "string",
+						"name": "propertyLocation",
+						"type": "string"
+					},
+					{
+						"internalType": "uint256",
+						"name": "propertySqft",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "propertyBhk",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "propertyBath",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "propertyPrice",
+						"type": "uint256"
+					},
+					{
+						"internalType": "address",
+						"name": "seller",
+						"type": "address"
+					},
+					{
+						"internalType": "address",
+						"name": "buyer",
+						"type": "address"
+					},
+					{
+						"internalType": "bool",
+						"name": "isSold",
+						"type": "bool"
+					}
+				],
+				"internalType": "struct RealEstateTransaction.PropertyListing[]",
+				"name": "",
+				"type": "tuple[]"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "address",
+				"name": "_ownerAddress",
+				"type": "address"
+			}
+		],
+		"name": "getOwnedProperties",
+		"outputs": [
+			{
+				"components": [
+					{
+						"internalType": "uint256",
+						"name": "propertyId",
+						"type": "uint256"
+					},
+					{
+						"internalType": "string",
+						"name": "imageUrl",
+						"type": "string"
+					},
+					{
+						"internalType": "string",
+						"name": "propertyTitle",
+						"type": "string"
+					},
+					{
+						"internalType": "string",
+						"name": "propertyLocation",
+						"type": "string"
+					},
+					{
+						"internalType": "uint256",
+						"name": "propertySqft",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "propertyBhk",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "propertyBath",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "propertyPrice",
+						"type": "uint256"
+					},
+					{
+						"internalType": "address",
+						"name": "seller",
+						"type": "address"
+					},
+					{
+						"internalType": "address",
+						"name": "buyer",
+						"type": "address"
+					},
+					{
+						"internalType": "bool",
+						"name": "isSold",
+						"type": "bool"
+					}
+				],
+				"internalType": "struct RealEstateTransaction.PropertyListing[]",
+				"name": "",
+				"type": "tuple[]"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "propertyListingCount",
+		"outputs": [
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"name": "propertyListings",
+		"outputs": [
+			{
+				"internalType": "uint256",
+				"name": "propertyId",
+				"type": "uint256"
+			},
+			{
+				"internalType": "string",
+				"name": "imageUrl",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "propertyTitle",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "propertyLocation",
+				"type": "string"
+			},
+			{
+				"internalType": "uint256",
+				"name": "propertySqft",
+				"type": "uint256"
+			},
+			{
+				"internalType": "uint256",
+				"name": "propertyBhk",
+				"type": "uint256"
+			},
+			{
+				"internalType": "uint256",
+				"name": "propertyBath",
+				"type": "uint256"
+			},
+			{
+				"internalType": "uint256",
+				"name": "propertyPrice",
+				"type": "uint256"
+			},
+			{
+				"internalType": "address",
+				"name": "seller",
+				"type": "address"
+			},
+			{
+				"internalType": "address",
+				"name": "buyer",
+				"type": "address"
+			},
+			{
+				"internalType": "bool",
+				"name": "isSold",
+				"type": "bool"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "address",
+				"name": "",
+				"type": "address"
+			},
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"name": "userOwnedProperties",
+		"outputs": [
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	}
+]
