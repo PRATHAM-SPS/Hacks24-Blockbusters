@@ -126,10 +126,11 @@ function Signup({ state }) {
                   </div>
                   <div className="col-12">
                     <input
+                    readonly
                       type="text"
                       className="form-control"
                       id="address"
-                      placeholder="Address"
+                      placeholder="Click on Connect Metamask to fetch Address automaticaly"
                       value={address}
                     />
                   </div>

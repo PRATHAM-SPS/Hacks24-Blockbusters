@@ -1,3 +1,4 @@
+import InvoiceModal from '../Agreement/Agreement'
 import { useState, useEffect } from "react";
 
 function Properties({ state }) {
@@ -14,13 +15,77 @@ function Properties({ state }) {
     console.log(AllAvailableProperties);
   };
 
+  const [transaction, SetTransaction] = useState([]);
+
+  async function getDonor(id) {
+    try {
+      const { contract, web3 } = state;
+      const transaction = await contract.methods
+      .getPropertyTransactions(id)
+      .call();
+      console.log("Hello getDonor");
+      console.log(transaction);
+      SetTransaction(transaction);
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
+  }
+
   const Buy = async(id, value) => {
     const { contract, web3 } = state;
     const accounts = await web3.eth.getAccounts();
+
+    const lastOwners = await getDonor(id)
+    
+    const property = await contract.methods.propertyListings(id)
+      .call();
+
+    console.log(property)
+
+    setStates({
+      dateOfIssue: new Date().toLocaleDateString(),
+      billTo: '',
+      billToEmail: '',
+      billToAddress: '',
+      billFrom: '',
+      billFromEmail: '',
+      billFromAddress: '',
+      propertyAddress: property.propertyLocation,
+      propertyPrice: property.propertyPrice,
+      propertySqft: property.propertySqft,
+      propertyTitle: property.propertyTitle,
+      propertyBhk: property.propertyBhk,
+      propertyBath: property.propertyBath,
+      brokerCut: property.brokerCut,
+      lastOwner: lastOwners ? lastOwners[lastOwners.length - 1].to : ''
+    })
+
+    setIsOpen(true);
     await contract.methods
           .buyProperty(Number(id))
           .send({ from: accounts[0], value: value, gas: 480000 });
+
   }
+
+  const [isOpen, setIsOpen] = useState(false); 
+  const [states, setStates] = useState({
+      currentDate: '',
+      dateOfIssue: '',
+      billTo: '',
+      billToEmail: '',
+      billToAddress: '',
+      billFrom: '',
+      billFromEmail: '',
+      billFromAddress: '',
+      propertyAddress: '',
+      propertyPrice: '',
+      propertySqft: '',
+      propertyTitle: '',
+      propertyBhk: '',
+      propertyBath: '',
+      brokerCut: '',
+      lastOwner: ''
+  }); 
 
   useEffect(() => {
     getData();
@@ -111,6 +176,7 @@ function Properties({ state }) {
                               >
                                 <i class="bi bi-cart4"></i> Buy Now
                               </button>
+            <InvoiceModal showModal={isOpen} closeModal={false} info={states} />
                             </div>
                           </div>
                         </div>
