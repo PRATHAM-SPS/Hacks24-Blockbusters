@@ -3,7 +3,30 @@ import axios from "axios"
 import { useNavigate, Link } from "react-router-dom"
 
 
-function Signup() {
+function Signup({ state }) {
+
+  async function getUser() {
+    try {
+      const { web3 } = state;
+      const accounts = await web3.eth.getAccounts();
+      
+      // Check if there are accounts available
+      if (accounts.length === 0) {
+        console.error("No Ethereum accounts available");
+        return;
+      }
+      setAddress(accounts[0]);
+    } catch (error) {
+      console.error("Error fetching user data:", error);
+      // Handle the error (e.g., show a message to the user)
+    }
+  }
+
+
+  useEffect(()=>{
+    getUser();
+  }, [state])
+
     const history=useNavigate();
 
     const [email,setEmail]=useState('')
@@ -107,7 +130,7 @@ function Signup() {
                       className="form-control"
                       id="address"
                       placeholder="Address"
-                      onChange={(e) => {setAddress(e.target.value)}}
+                      value={address}
                     />
                   </div>
                   <div className="col-12">
