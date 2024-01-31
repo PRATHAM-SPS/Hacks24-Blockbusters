@@ -48,12 +48,88 @@
 				"internalType": "uint256",
 				"name": "propertyPrice",
 				"type": "uint256"
+			},
+			{
+				"internalType": "address",
+				"name": "seller",
+				"type": "address"
+			},
+			{
+				"internalType": "uint256",
+				"name": "brokerCut",
+				"type": "uint256"
 			}
 		],
-		"name": "createPropertyListing",
+		"name": "createPropertyListingWithBroker",
 		"outputs": [],
 		"stateMutability": "nonpayable",
 		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "string",
+				"name": "imageUrl",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "propertyTitle",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "propertyLocation",
+				"type": "string"
+			},
+			{
+				"internalType": "uint256",
+				"name": "propertySqft",
+				"type": "uint256"
+			},
+			{
+				"internalType": "uint256",
+				"name": "propertyBhk",
+				"type": "uint256"
+			},
+			{
+				"internalType": "uint256",
+				"name": "propertyBath",
+				"type": "uint256"
+			},
+			{
+				"internalType": "uint256",
+				"name": "propertyPrice",
+				"type": "uint256"
+			}
+		],
+		"name": "createPropertyListingWithoutBroker",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "propertyListingId",
+				"type": "uint256"
+			},
+			{
+				"internalType": "uint256",
+				"name": "propertyPrice",
+				"type": "uint256"
+			}
+		],
+		"name": "reSell",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"stateMutability": "nonpayable",
+		"type": "constructor"
 	},
 	{
 		"anonymous": false,
@@ -145,8 +221,13 @@
 					},
 					{
 						"internalType": "address",
-						"name": "buyer",
+						"name": "broker",
 						"type": "address"
+					},
+					{
+						"internalType": "uint256",
+						"name": "brokerCut",
+						"type": "uint256"
 					},
 					{
 						"internalType": "bool",
@@ -221,8 +302,13 @@
 					},
 					{
 						"internalType": "address",
-						"name": "buyer",
+						"name": "broker",
 						"type": "address"
+					},
+					{
+						"internalType": "uint256",
+						"name": "brokerCut",
+						"type": "uint256"
 					},
 					{
 						"internalType": "bool",
@@ -233,6 +319,60 @@
 				"internalType": "struct RealEstateTransaction.PropertyListing[]",
 				"name": "",
 				"type": "tuple[]"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "_id",
+				"type": "uint256"
+			}
+		],
+		"name": "getPropertyTransactions",
+		"outputs": [
+			{
+				"components": [
+					{
+						"internalType": "uint256",
+						"name": "time",
+						"type": "uint256"
+					},
+					{
+						"internalType": "address",
+						"name": "from",
+						"type": "address"
+					},
+					{
+						"internalType": "address",
+						"name": "to",
+						"type": "address"
+					},
+					{
+						"internalType": "uint256",
+						"name": "value",
+						"type": "uint256"
+					}
+				],
+				"internalType": "struct RealEstateTransaction.Transactions[]",
+				"name": "",
+				"type": "tuple[]"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "owner",
+		"outputs": [
+			{
+				"internalType": "address",
+				"name": "",
+				"type": "address"
 			}
 		],
 		"stateMutability": "view",
@@ -308,13 +448,57 @@
 			},
 			{
 				"internalType": "address",
-				"name": "buyer",
+				"name": "broker",
 				"type": "address"
+			},
+			{
+				"internalType": "uint256",
+				"name": "brokerCut",
+				"type": "uint256"
 			},
 			{
 				"internalType": "bool",
 				"name": "isSold",
 				"type": "bool"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			},
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"name": "Transactions_Mapping",
+		"outputs": [
+			{
+				"internalType": "uint256",
+				"name": "time",
+				"type": "uint256"
+			},
+			{
+				"internalType": "address",
+				"name": "from",
+				"type": "address"
+			},
+			{
+				"internalType": "address",
+				"name": "to",
+				"type": "address"
+			},
+			{
+				"internalType": "uint256",
+				"name": "value",
+				"type": "uint256"
 			}
 		],
 		"stateMutability": "view",
