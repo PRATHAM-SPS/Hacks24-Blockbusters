@@ -47,7 +47,7 @@ function GenerateInvoice() {
           pdf.addPage();
         }
       }
-  /
+  
       pdf.save('invoice-001.pdf');
     });
   }
