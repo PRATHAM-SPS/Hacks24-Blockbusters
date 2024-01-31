@@ -1,9 +1,32 @@
 import React, { useEffect, useState } from "react"
 import axios from "axios"
 import { useNavigate, Link } from "react-router-dom"
-
+import validator from 'aadhaar-validator';
+import isValid from 'pancardjs';
 
 function Signup({ state }) {
+
+  const [isValidAdhar, setIsValidAdhar] = useState(true);
+
+  const handleAdharChange = (e) => {
+    const inputValue = e.target.value;
+    setAdhar(inputValue);
+
+    // Validate Aadhaar number
+    const isValid = validator.isValidNumber(inputValue);
+    setIsValidAdhar(isValid);
+  };
+
+  const [isValidPan, setIsValidPan] = useState(true);
+
+  const handlePanChange = (e) => {
+    const inputValue = e.target.value;
+    setPan(inputValue);
+
+    // Validate Aadhaar number
+    const isValid1 = isValid.pan(inputValue);
+    setIsValidPan(isValid1);
+  };
 
   async function getUser() {
     try {
@@ -143,16 +166,18 @@ function Signup({ state }) {
                       onChange={(e) => {setPin(e.target.value)}}
                     />
                   </div>
-                  <div className="col-12">
+                  <div>
                     <input
                       type="text"
-                      className="form-control"
+                      className={`form-control ${isValidPan ? '' : 'is-invalid'}`}
                       id="pan"
-                      placeholder="Pan Number"
-                      onChange={(e) => {setPan(e.target.value)}}
+                      placeholder="Pan"
+                      value={pan}
+                      onChange={handlePanChange}
                     />
+                    {!isValidPan && <div className="invalid-feedback">Invalid Pan number</div>}
                   </div>
-                  <div className="col-12">
+                  {/* <div className="col-12">
                     <input
                       type="text"
                       className="form-control"
@@ -160,6 +185,17 @@ function Signup({ state }) {
                       placeholder="Adhar"
                       onChange={(e) => {setAdhar(e.target.value)}}
                     />
+                  </div> */}
+                  <div>
+                    <input
+                      type="text"
+                      className={`form-control ${isValidAdhar ? '' : 'is-invalid'}`}
+                      id="adhar"
+                      placeholder="Adhar"
+                      value={adhar}
+                      onChange={handleAdharChange}
+                    />
+                    {!isValidAdhar && <div className="invalid-feedback">Invalid Aadhaar number</div>}
                   </div>
                   <div className="col-12">
                     <button
