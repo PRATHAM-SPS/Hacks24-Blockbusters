@@ -1,4 +1,5 @@
-from flask import Flask, jsonify
+from pymongo import MongoClient
+from flask import Flask, request, jsonify
 from flask_restful import Resource, Api, reqparse
 import pandas as pd
 from flask_cors import CORS
@@ -133,6 +134,68 @@ api.add_resource(getData, '/api')
 api.add_resource(getLocation, '/location')
 api.add_resource(prediction, '/prediction/<string:location>/<int:sqft>/<int:bhk>/<int:bath>')
 api.add_resource(sendData, '/receive_data')
+
+
+# Connect to MongoDB
+client = MongoClient('mongodb+srv://pratham:blockbusters@cluster0.saiervy.mongodb.net/')
+db = client['blockchain']
+collection = db['collection']
+
+@app.route('/', methods=['GET'])
+def index():
+    return "Welcome to the Flask API!"
+
+@app.route('/login', methods=['POST'])
+def login():
+    data = request.get_json()
+    email = data.get('email')
+    password = data.get('password')
+
+    try:
+        check = collection.find_one({'email': email})
+
+        if check:
+            return jsonify("exist")
+        else:
+            return jsonify("notexist")
+    except Exception as e:
+        return jsonify("fail")
+
+@app.route('/signup', methods=['POST'])
+def signup():
+    data = request.get_json()
+    email = data.get('email')
+    password = data.get('password')
+    name = data.get('name')
+    age = data.get('age')
+    address = data.get('address')
+    pin = data.get('pin')
+    pan = data.get('pan')
+    adhar =data.get('adhar')
+
+    data_to_insert = {
+        'email': email,
+        'password': password,
+        'name': name,
+        'age': age,
+        'address': address,
+        'pin': pin,
+        'pan': pan,
+        'adhar': adhar
+    }
+
+    try:
+        check = collection.find_one({'email': email})
+
+        if check:
+            return jsonify("exist")
+        else:
+            collection.insert_one(data_to_insert)
+            return jsonify("notexist")
+    except Exception as e:
+        return jsonify("fail")
+
+
 
 if __name__ == '__main__':
     app.run(debug=True)

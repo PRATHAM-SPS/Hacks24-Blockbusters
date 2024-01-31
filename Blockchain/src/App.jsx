@@ -7,7 +7,8 @@ import Properties from "./Components/Properties/Properties";
 import My_Properties from "./Components/My_Properties/My_Properties";
 import Transactions from "./Components/Transactions/Transactions";
 import Footer from "./Components/Footer/Footer";
-
+import Login from "./Components/registration/login";
+import Signup from "./Components/registration/signup";
 import { useState } from "react";
 
 function App() {
@@ -27,6 +28,8 @@ function App() {
       <BrowserRouter>
       <Navbar saveState={saveState}/>
       <Routes>
+          <Route path="/login" element={<Login/>}/>
+          <Route path="/signup" element={<Signup/>}/>
         <Route path="/" element={<Hero state={state} />} />
         <Route path="/add" element={<Add_Property state={state} />} />
         <Route path="transactions">
