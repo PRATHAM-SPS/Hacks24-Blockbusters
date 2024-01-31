@@ -15,6 +15,8 @@ function Add_Property({ state }) {
   const [brokerId, setBrokerId] = useState('');
   const [percentageCut, setPercentageCut] = useState('');
 
+  const Reckoner_Rate = 3;
+
   const submitImage = async (event) => {
     // Your existing code for submitting image
     try {
@@ -54,11 +56,6 @@ function Add_Property({ state }) {
         await contract.methods
         .createPropertyListingWithoutBroker(imageUrl, name, locations, sqft, bhk, bath, price)
         .send({ from: accounts[0] });
-      } else {
-        await contract.methods
-        .createPropertyListingWithBroker(imageUrl, name, locations, sqft, bhk, bath, price, brokerId, percentageCut)
-        .send({ from: accounts[0] });
-      }
         toast.success("Your property is now registered.", {
           position: "top-right",
           autoClose: 5000,
@@ -69,6 +66,32 @@ function Add_Property({ state }) {
           progress: undefined,
           theme: "dark",
         });
+      } else if(hasBroker == true && percentageCut < 100) {
+        await contract.methods
+        .createPropertyListingWithBroker(imageUrl, name, locations, sqft, bhk, bath, price, brokerId, percentageCut)
+        .send({ from: accounts[0] });
+        toast.success("Your property is now registered.", {
+          position: "top-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "dark",
+        });
+      } else {
+        toast.error("Brokerage Cut cannot exceed 100", {
+          position: "top-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "dark",
+        });
+      }
       console.log("Hiii1");
     } catch (error) {
       console.error(error);

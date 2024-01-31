@@ -1,6 +1,8 @@
 import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import moment from "moment";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import left from "./left.svg";
 
 const Transactions = ({ state }) => {
@@ -20,9 +22,42 @@ const Transactions = ({ state }) => {
       await contract.methods
       .reSell(userId, Number(Price))
       .send({ from : accounts[0] });
+      toast.success("Your property is now added to resell.", {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "dark",
+      });
       console.log("Success Resell");
     } catch (error) {
       console.error("Error fetching data:", error);
+      if(error.code == 4001) {
+        toast.error("User Denied the transaction", {
+          position: "top-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "dark",
+        });
+      } else {
+        toast.error("Something went wrong", {
+          position: "top-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "dark",
+        });
+      }
     }
   }
 
@@ -68,6 +103,7 @@ const Transactions = ({ state }) => {
   }, [contract, userId]);
   return (
     <>
+    <ToastContainer />
       <div class="container-xxl py-5 about">
         <div class="container">
           <div class="row g-5 align-items-center" style={{ height: "80vh" }}>
@@ -146,6 +182,8 @@ const Transactions = ({ state }) => {
                 amount={post.value}
                 from={post.from}
                 to={post.to}
+                broker={post.broker}
+                brokerCut={post.brokerCut}
               />
             </>
           ))}
@@ -156,7 +194,7 @@ const Transactions = ({ state }) => {
 
 export default Transactions;
 
-const TransactionsCard = ({ date, amount, from, to }) => {
+const TransactionsCard = ({ date, amount, from, to, broker, brokerCut }) => {
   return (
     <div className="container-xxl">
       <div className="container">
@@ -173,15 +211,44 @@ const TransactionsCard = ({ date, amount, from, to }) => {
                 <div>
                 <p style={{ margin: "0px" }}>Total Amount</p>
                 <h1 style={{ margin: "0px" }}>{amount} MATIC</h1>
+                <p style={{ margin: "0px", display: "flex", textAlign: "center", alignItems: "center" }}><p style={{ margin: "0px", display: "flex", fontWeight: 'bolder', fontSize: 'large' }}> from: {from} (Buyer)</p></p>
                 </div>
                 <div style={{
     display: 'flex',
     justifyContent: 'space-between',
   }}>
-                <p style={{ margin: "0px", display: "flex", textAlign: "center", alignItems: "center" }}>from &nbsp;<p style={{ margin: "0px", display: "flex", fontWeight: 'bolder', fontSize: 'large' }}> {from}</p></p>
-                {/* <img src={left} alt="" /> */}
-                <p style={{ margin: "0px", display: "flex", textAlign: "center", alignItems: "center" }}>to &nbsp;<p style={{ margin: "0px", display: "flex", fontWeight: 'bolder', fontSize: 'large' }}> {to}</p></p>
+                <p style={{ margin: "0px", display: "flex", textAlign: "center", alignItems: "center" }}><p style={{ margin: "0px", display: "flex", fontWeight: 'bolder', fontSize: 'large' }}> {"0x22DC7493c03e1763EC0fA355F0C15E72363e592d"} (GOI)</p></p>
+                <img src={left} alt="" />
+                <p style={{ margin: "0px", display: "flex", textAlign: "center", alignItems: "center" }}>value &nbsp;<p style={{ margin: "0px", display: "flex", fontWeight: 'bolder', fontSize: 'large' }}> {Math.round(amount * 0.05)}</p></p>
                 </div>
+
+                <div style={{
+    display: 'flex',
+    justifyContent: 'space-between',
+  }}>
+                <p style={{ margin: "0px", display: "flex", textAlign: "center", alignItems: "center" }}><p style={{ margin: "0px", display: "flex", fontWeight: 'bolder', fontSize: 'large' }}> {"0xef85fABEe89C1F943dE75b641Be2edDbB73Fc643"} (Platform Fee)</p></p>
+                <img src={left} alt="" />
+                <p style={{ margin: "0px", display: "flex", textAlign: "center", alignItems: "center" }}>value &nbsp;<p style={{ margin: "0px", display: "flex", fontWeight: 'bolder', fontSize: 'large' }}> {Math.round(amount * 0.01)}</p></p>
+                </div>
+
+                <div style={{
+    display: 'flex',
+    justifyContent: 'space-between',
+  }}>
+                <p style={{ margin: "0px", display: "flex", textAlign: "center", alignItems: "center" }}><p style={{ margin: "0px", display: "flex", fontWeight: 'bolder', fontSize: 'large' }}> {broker} (Broker)</p></p>
+                <img src={left} alt="" />
+                <p style={{ margin: "0px", display: "flex", textAlign: "center", alignItems: "center" }}>value &nbsp;<p style={{ margin: "0px", display: "flex", fontWeight: 'bolder', fontSize: 'large' }}> {brokerCut}</p></p>
+                </div>
+
+                <div style={{
+    display: 'flex',
+    justifyContent: 'space-between',
+  }}>
+                <p style={{ margin: "0px", display: "flex", textAlign: "center", alignItems: "center" }}><p style={{ margin: "0px", display: "flex", fontWeight: 'bolder', fontSize: 'large' }}> {to} (Seller)</p></p>
+                <img src={left} alt="" />
+                <p style={{ margin: "0px", display: "flex", textAlign: "center", alignItems: "center" }}>value &nbsp;<p style={{ margin: "0px", display: "flex", fontWeight: 'bolder', fontSize: 'large' }}> {Math.round(amount - brokerCut - (amount * 0.05) - (amount * 0.01))}</p></p>
+                </div>
+
               </div>
             </div>
           </div>
