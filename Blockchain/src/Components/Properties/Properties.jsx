@@ -34,9 +34,10 @@ function Properties({ state }) {
               >
                 <h1 class="mb-3">Property Listing</h1>
                 <p>
-                  Eirmod sed ipsum dolor sit rebum labore magna erat. Tempor ut
-                  dolore lorem kasd vero ipsum sit eirmod sit diam justo sed
-                  rebum.
+                Welcome to our listings! Explore a curated collection of properties that could be your next dream home
+                 or investment opportunity. Browse through the listings below and find the perfect match for your
+                  needs and desires. 
+                  Happy searching !!!
                 </p>
               </div>
             </div>

@@ -11,8 +11,12 @@ function Add_Property({ state }) {
   const [bhk, setBhk] = useState("");
   const [bath, setBath] = useState("");
   const [price, setPrice] = useState("");
+  const [hasBroker, setHasBroker] = useState(false); // Initially set to false
+  const [brokerId, setBrokerId] = useState('');
+  const [percentageCut, setPercentageCut] = useState('');
 
   const submitImage = async (event) => {
+    // Your existing code for submitting image
     try {
       event.preventDefault();
       const data = new FormData();
@@ -66,6 +70,7 @@ function Add_Property({ state }) {
     }
   };
   
+
   const submitAndBlock = async (event) => {
     try {
       const imageUrl = await submitImage(event);
@@ -78,7 +83,7 @@ function Add_Property({ state }) {
 
   return (
     <>
-    <ToastContainer />
+      <ToastContainer />
       <div className="container-xxl py-5 predict">
         <div className="container">
           <div
@@ -86,11 +91,13 @@ function Add_Property({ state }) {
             data-wow-delay="0.1s"
             style={{ maxWidth: "600px" }}
           >
-            <h1 className="mb-3">Predict Now</h1>
+            <h1 className="mb-3">ADD A PROPERTY </h1>
+
+            
             <p>
-              Eirmod sed ipsum dolor sit rebum labore magna erat. Tempor ut
-              dolore lorem kasd vero ipsum sit eirmod sit. Ipsum diam justo sed
-              rebum vero dolor duo.
+            Ready to captivate potential buyers or renters? This is your canvas to showcase 
+            the essence of your property. Let's craft an irresistible listing! Take the lead and share 
+            the details below.
             </p>
           </div>
           <div className="row g-4">
@@ -101,6 +108,7 @@ function Add_Property({ state }) {
                   <div className="wow fadeInUp" data-wow-delay="0.5s">
                     <form>
                       <div className="row g-3">
+                        {/* Your existing form fields */}
                         <div className="col-12">
                           <input
                             type="file"
@@ -197,6 +205,67 @@ function Add_Property({ state }) {
                           </div>
                         </div>
 
+
+
+
+                        {/* Add radio buttons for selecting whether there is a broker */}
+                        <div className="col-12">
+                          <div className="form-check">
+                          <p><h4>Is there a broker involved with this property ?</h4></p>
+                            <input
+                              type="radio"
+                              className="form-check-input"
+                              id="hasBrokerYes"
+                              checked={hasBroker === true} // Check if hasBroker is true
+                              onChange={() => setHasBroker(true)} // Set hasBroker to true when selected
+                            />
+                            <label className="form-check-label" htmlFor="hasBrokerYes">Yes</label>
+                          </div>
+                          <div className="form-check">
+                            <input
+                              type="radio"
+                              className="form-check-input"
+                              id="hasBrokerNo"
+                              checked={hasBroker === false} // Check if hasBroker is false
+                              onChange={() => setHasBroker(false)} // Set hasBroker to false when selected
+                            />
+                            <label className="form-check-label" htmlFor="hasBrokerNo">No</label>
+                          </div>
+                        </div>
+
+                        {/* Broker related fields */}
+                        {hasBroker && (
+                          <>
+                            <div className="col-12">
+                              <div className="form-floating">
+                                <input
+                                  type="text"
+                                  className="form-control"
+                                  id="brokerId"
+                                  placeholder="Broker ID"
+                                  value={brokerId}
+                                  onChange={(e) => setBrokerId(e.target.value)}
+                                />
+                                <label htmlFor="brokerId">Broker ID</label>
+                              </div>
+                            </div>
+                            <div className="col-12">
+                              <div className="form-floating">
+                                <input
+                                  type="text"
+                                  className="form-control"
+                                  id="percentageCut"
+                                  placeholder="Percentage Cut"
+                                  value={percentageCut}
+                                  onChange={(e) => setPercentageCut(e.target.value)}
+                                />
+                                <label htmlFor="percentageCut">Percentage Cut</label>
+                              </div>
+                            </div>
+                          </>
+                        )}
+
+                        {/* Your existing submit button */}
                         <div className="col-12">
                           <button
                             className="btn btn-primary w-100 py-3"
@@ -210,7 +279,6 @@ function Add_Property({ state }) {
                     </form>
                   </div>
                 </div>
-                {/* End Contact Form */}
               </div>
             </div>
           </div>
