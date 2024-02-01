@@ -67,7 +67,7 @@ function GenerateInvoice() {
           pdf.addPage();
         }
       }
-
+      console.log("pdf",typeof pdf)
       pdf.save("invoice-001.pdf");
     });
   }).catch((error) => {

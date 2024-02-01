@@ -8,6 +8,7 @@ function Predict() {
   const [bhk, setBhk] = useState("");
   const [bath, setBath] = useState("");
   const [prediction, setPrediction] = useState("");
+  const [buildingage, setBuildingage] = useState("");
 
   const [locations, setLocations] = useState([]); // Initialize as an empty array
 
@@ -127,6 +128,19 @@ function Predict() {
                               onChange={(e) => setBath(e.target.value)}
                             />
                             <label htmlFor="subject">Bathroom</label>
+                          </div>
+                        </div>
+                        <div className="col-md-6">
+                          <div className="form-floating">
+                            <input
+                              type="number"
+                              id="email"
+                              className="form-control"
+                              placeholder="Enter age of Building "
+                              value={sqft}
+                              onChange={(e) => setBuildingage(e.target.value)}
+                            />
+                            <label htmlFor="email">Building Age </label>
                           </div>
                         </div>
 
