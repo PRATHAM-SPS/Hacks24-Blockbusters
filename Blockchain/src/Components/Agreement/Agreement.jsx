@@ -7,6 +7,7 @@ import Modal from "react-bootstrap/Modal";
 import { BiPaperPlane, BiCloudDownload } from "react-icons/bi";
 import html2canvas from "html2canvas";
 import jsPDF from "jspdf";
+import axios from "axios";
 
 // const [image, setImage] = useState();
 import domtoimage from 'dom-to-image';
@@ -27,11 +28,11 @@ const capture =  () => {
     });
 };
 
-function GenerateInvoice() {
+async function GenerateInvoice() {
    capture().then((himg) => { // Use the promise returned by capture
     const element = document.querySelector("#invoiceCapture");
 
-    html2canvas(element, { scrollY: -window.scrollY }).then((canvas) => {
+    html2canvas(element, { scrollY: -window.scrollY }).then(async (canvas) => {
       const imgData = canvas.toDataURL("image/png", 1.0);
       // console.log(imgData,"imaggeeeeeeee")
       const pdf = new jsPDF({
@@ -67,7 +68,25 @@ function GenerateInvoice() {
           pdf.addPage();
         }
       }
-      console.log("pdf",typeof pdf)
+      const pdfBlob = pdf.output('blob')
+
+      const formData = new FormData();
+        formData.append("file", pdfBlob);
+
+        const pinataresponse = await axios.post(
+          "https://api.pinata.cloud/pinning/pinFileToIPFS",
+          formData,
+          {
+            headers: {
+              "Content-Type": "multipart/form-data",
+              'pinata_api_key': "343511a4461af717ffa0",
+              'pinata_secret_api_key':
+                "ba091478c566ec2ca3ba1822ba6d94844fb06c0d01d25537c23af4c93720944a",
+            },
+          },
+        );
+        setIpfsHash(pinataresponse.data.IpfsHash);
+
       pdf.save("invoice-001.pdf");
     });
   }).catch((error) => {
@@ -429,11 +448,11 @@ class InvoiceModal extends React.Component {
                     }}
                   >
                     <img
-                      src={`https://api.qrserver.com/v1/create-qr-code/?size=50x50&data=${this.props.info.qrcode}`}
+                      src={`https://api.qrserver.com/v1/create-qr-code/?size=50x50&data=ipfs.io/ipfs/${ipfsHash}`}
                       alt="QR"
                       width="150px"
                       height="150px"
-                      hidden={!this.props.isQr}
+                      hidden={!this.props.isQr || !ipfsHash}
                     ></img>
                   </tr>
                   <tr
@@ -446,8 +465,8 @@ class InvoiceModal extends React.Component {
                       marginBottom: "30px",
                       alignmentBaseline: "center",
                     }}
-                    
-                  ><b>Signed By Makkan</b>
+                    >
+                    <div hidden={!this.props.isQr}><b>Signed By <h1 className="m-0 text-primary">Makaan</h1> </b></div>    
                   <br></br>
                   <br></br>
                   </tr>
