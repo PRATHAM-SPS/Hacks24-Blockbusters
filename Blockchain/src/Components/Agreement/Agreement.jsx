@@ -34,15 +34,14 @@ async function GenerateInvoice() {
 
     html2canvas(element, { scrollY: -window.scrollY }).then(async (canvas) => {
       const imgData = canvas.toDataURL("image/png", 1.0);
-      // console.log(imgData,"imaggeeeeeeee")
       const pdf = new jsPDF({
         orientation: "portrait",
         unit: "pt",
-        format: [612, 792],
+        format: [612, canvas.height + 100],
       });
 
       const imgWidth = 612;
-      const imgHeight = (canvas.height * imgWidth ) / canvas.width;
+      const imgHeight = (canvas.height * imgWidth) / canvas.width;
 
       let position = 0;
       let pageHeight = pdf.internal.pageSize.getHeight();
@@ -87,7 +86,21 @@ async function GenerateInvoice() {
         );
         setIpfsHash(pinataresponse.data.IpfsHash);
 
-      pdf.save("invoice-001.pdf");
+      const pdfData = pdf.output('blob'); // Get PDF data as Blob
+
+      // Upload to Pinata
+      const pinata = create(pinataApiKey, pinataApiSecret);
+      const options = {
+        pinataMetadata: {
+          name: 'invoice-001.pdf',
+        },
+      };
+
+      pinata.pinFileToIPFS(pdfData, options).then((response) => {
+        console.log("File uploaded to Pinata:", response);
+      }).catch((error) => {
+        console.error('Error uploading file to Pinata:', error);
+      });
     });
   }).catch((error) => {
     console.error('Error generating invoice:', error);
@@ -448,7 +461,7 @@ class InvoiceModal extends React.Component {
                     }}
                   >
                     <img
-                      src={`https://api.qrserver.com/v1/create-qr-code/?size=50x50&data=ipfs.io/ipfs/${ipfsHash}`}
+                      src={`https://api.qrserver.com/v1/create-qr-code/?size=50x50&data=ipfs.io/ipfs/${123}`}
                       alt="QR"
                       width="150px"
                       height="150px"
