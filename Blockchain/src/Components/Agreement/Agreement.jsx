@@ -14,7 +14,15 @@ import domtoimage from 'dom-to-image';
 //
 
 //
-const capture =  () => {
+
+class InvoiceModal extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      ipfsHash: null,
+    };
+  }
+ capture =  () => {
   const node = document.getElementById('invoiceCapture');
 
   return domtoimage.toPng(node)
@@ -28,89 +36,120 @@ const capture =  () => {
     });
 };
 
-async function GenerateInvoice() {
-   capture().then((himg) => { // Use the promise returned by capture
-    const element = document.querySelector("#invoiceCapture");
+Verify = async() => {
+/// Uploading to ipfs without qr
+this.capture().then((himg) => { // Use the promise returned by capture
+  const element = document.querySelector("#invoiceCapture");
 
-    html2canvas(element, { scrollY: -window.scrollY }).then(async (canvas) => {
-      const imgData = canvas.toDataURL("image/png", 1.0);
-      const pdf = new jsPDF({
-        orientation: "portrait",
-        unit: "pt",
-        format: [612, canvas.height + 100],
-      });
-
-      const imgWidth = 612;
-      const imgHeight = (canvas.height * imgWidth) / canvas.width;
-
-      let position = 0;
-      let pageHeight = pdf.internal.pageSize.getHeight();
-
-      while (position < imgHeight) {
-        const sliceHeight = Math.min(imgHeight - position, pageHeight);
-        pdf.addImage(
-          himg,
-          "PNG",
-          0,
-          -position,
-          imgWidth,
-          imgHeight,
-          null,
-          "SLOW",
-          "MEDIUM",
-          0,
-          true
-        );
-        position += sliceHeight;
-
-        if (position < imgHeight) {
-          pdf.addPage();
-        }
-      }
-      const pdfBlob = pdf.output('blob')
-
-      const formData = new FormData();
-        formData.append("file", pdfBlob);
-
-        const pinataresponse = await axios.post(
-          "https://api.pinata.cloud/pinning/pinFileToIPFS",
-          formData,
-          {
-            headers: {
-              "Content-Type": "multipart/form-data",
-              'pinata_api_key': "343511a4461af717ffa0",
-              'pinata_secret_api_key':
-                "ba091478c566ec2ca3ba1822ba6d94844fb06c0d01d25537c23af4c93720944a",
-            },
-          },
-        );
-        setIpfsHash(pinataresponse.data.IpfsHash);
-
-      const pdfData = pdf.output('blob'); // Get PDF data as Blob
-
-      // Upload to Pinata
-      const pinata = create(pinataApiKey, pinataApiSecret);
-      const options = {
-        pinataMetadata: {
-          name: 'invoice-001.pdf',
-        },
-      };
-
-      pinata.pinFileToIPFS(pdfData, options).then((response) => {
-        console.log("File uploaded to Pinata:", response);
-      }).catch((error) => {
-        console.error('Error uploading file to Pinata:', error);
-      });
+  html2canvas(element, { scrollY: -window.scrollY }).then(async (canvas) => {
+    const imgData = canvas.toDataURL("image/png", 1.0);
+    const pdf = new jsPDF({
+      orientation: "portrait",
+      unit: "pt",   
+      format: [612, 792],
     });
-  }).catch((error) => {
-    console.error('Error generating invoice:', error);
+
+    const imgWidth = 612;
+    const imgHeight = (canvas.height * imgWidth) / canvas.width;
+
+    let position = 0;
+    let pageHeight = pdf.internal.pageSize.getHeight();
+
+    while (position < imgHeight) {
+      const sliceHeight = Math.min(imgHeight - position, pageHeight);
+      pdf.addImage(
+        himg,
+        "PNG",
+        0,
+        -position,
+        imgWidth,
+        imgHeight,
+        null,
+        "SLOW",
+        "MEDIUM",
+        0,
+        true
+      );
+      position += sliceHeight;
+
+      if (position < imgHeight) {
+        pdf.addPage();
+      }
+    }
+    const pdfBlob = pdf.output('blob')
+
+    const formData = new FormData();
+      formData.append("file", pdfBlob);
+
+      const pinataresponse = await axios.post(
+        "https://api.pinata.cloud/pinning/pinFileToIPFS",
+        formData,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+            'pinata_api_key': "343511a4461af717ffa0",
+            'pinata_secret_api_key':
+              "ba091478c566ec2ca3ba1822ba6d94844fb06c0d01d25537c23af4c93720944a",
+          },
+        },
+      );
+      console.log(pinataresponse.data.IpfsHash);
+      this.setState({ ipfsHash: pinataresponse.data.IpfsHash });
   });
+}).catch((error) => {
+  console.error('Error generating invoice:', error);
+});
 }
 
-class InvoiceModal extends React.Component {
-  // constructor(props) {
-  //   super(props);
-  // }
+  GenerateInvoice = async () => {
+
+  //// Savng to local device with qr
+
+  // const delayProcess = setTimeout(() => {
+    this.capture().then((himg) => { // Use the promise returned by capture
+      const element = document.querySelector("#invoiceCapture");
+
+      html2canvas(element, { scrollY: -window.scrollY }).then(async (canvas) => {
+        const imgData = canvas.toDataURL("image/png", 1.0);
+        const QRpdf = new jsPDF({
+          orientation: "portrait",
+          unit: "pt",
+          format: [612, 792],
+        });
+
+        const imgWidth = 612;
+        const imgHeight = (canvas.height * imgWidth) / canvas.width;
+
+        let position = 0;
+        let pageHeight = QRpdf.internal.pageSize.getHeight();
+
+        while (position < imgHeight) {
+          const sliceHeight = Math.min(imgHeight - position, pageHeight);
+          QRpdf.addImage(
+            himg,
+            "PNG",
+            0,
+            -position,
+            imgWidth,
+            imgHeight,
+            null,
+            "SLOW",
+            "MEDIUM",
+            0,
+            true
+          );
+          position += sliceHeight;
+
+          if (position < imgHeight) {
+            QRpdf.addPage();
+          }
+        }
+        QRpdf.save('WithQR.pdf')
+      });
+    })
+  // },0);
+}
+
   render() {
     return (
       <div>
@@ -460,13 +499,13 @@ class InvoiceModal extends React.Component {
                       alignmentBaseline: "center",
                     }}
                   >
-                    <img
-                      src={`https://api.qrserver.com/v1/create-qr-code/?size=50x50&data=ipfs.io/ipfs/${123}`}
-                      alt="QR"
-                      width="150px"
-                      height="150px"
-                      hidden={!this.props.isQr || !ipfsHash}
-                    ></img>
+                        <img
+                        src={`https://api.qrserver.com/v1/create-qr-code/?size=50x50&data=ipfs.io/ipfs/${this.state.ipfsHash}`}
+                        alt="QR"
+                        width="150px"
+                        height="150px"
+                        hidden={!this.props.isQr || !this.state.ipfsHash}
+                      ></img>
                   </tr>
                   <tr
                     style={{
@@ -476,6 +515,7 @@ class InvoiceModal extends React.Component {
                       width: "100%",            // Take full width of parent container
                       fontSize: "10px",
                       marginBottom: "30px",
+                      marginTop: "30px",
                       alignmentBaseline: "center",
                     }}
                     >
@@ -487,13 +527,28 @@ class InvoiceModal extends React.Component {
               </Table>
             </div>
           </div>
-          <div className="pb-4 px-4">
+          <div className="pb-4 px-2">
+            <Row className="justify-content-center mb-3">
+              <Col  md={6} className="d-flex justify-content-center">
+                <Button
+                  variant="outline-primary"
+                  className="d-block w-100 mt-3 mt-md-0"
+                  onClick={this.Verify}
+                >
+                  <BiCloudDownload
+                    style={{ width: "16px", height: "16px", marginTop: "-3px" }}
+                    className="me-2"
+                  />
+                  Upload Deed to IPFS for verification
+                </Button>
+              </Col>
+            </Row>
             <Row className="justify-content-center">
               <Col  md={6} className="d-flex justify-content-center">
                 <Button
                   variant="outline-primary"
                   className="d-block w-100 mt-3 mt-md-0"
-                  onClick={GenerateInvoice}
+                  onClick={this.GenerateInvoice}
                 >
                   <BiCloudDownload
                     style={{ width: "16px", height: "16px", marginTop: "-3px" }}
