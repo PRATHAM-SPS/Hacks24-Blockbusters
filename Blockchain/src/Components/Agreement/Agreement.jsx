@@ -68,6 +68,8 @@ function GenerateInvoice() {
         }
       }
 
+      console.log("PDF DATA : ",pdf);
+
       pdf.save("invoice-001.pdf");
     });
   }).catch((error) => {

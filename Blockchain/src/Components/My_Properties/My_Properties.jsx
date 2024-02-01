@@ -69,17 +69,13 @@ function My_Properties({ state }) {
                                 />
                               </a>
 
-                              {Property[9] === Account ? (
+                              {Property.isSold === true ? (
                                 <div className="rounded text-white position-absolute start-0 top-0 m-4 py-1 px-3" style={{ backgroundColor: "green" }}>
                                   Purchased
                                 </div>
-                              ) : Property[9] === "0x0000000000000000000000000000000000000000" ? (
+                              ): (
                                 <div className="bg-primary rounded text-white position-absolute start-0 top-0 m-4 py-1 px-3">
                                   For Sell
-                                </div>
-                              ) : (
-                                <div className="rounded text-white position-absolute start-0 top-0 m-4 py-1 px-3" style={{ backgroundColor: "#dd1a1a" }}>
-                                  Sold
                                 </div>
                               )   
                               }

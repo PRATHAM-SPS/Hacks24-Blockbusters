@@ -9,6 +9,7 @@ import Transactions from "./Components/Transactions/Transactions";
 import Footer from "./Components/Footer/Footer";
 import Login from "./Components/registration/login";
 import Signup from "./Components/registration/signup";
+import Dom_To_Image from "./Components/Dom_To_Image/Dom_To_Image";
 import { useState } from "react";
 
 function App() {
@@ -38,6 +39,9 @@ function App() {
         <Route path="/properties" element={<Properties state={state} />} />
         <Route path="/my_properties" element={<My_Properties state={state} />} />
         <Route path="/predict" element={<Predict state={state} />} />
+        //
+        <Route path="/dom" element={<Dom_To_Image state={state} />} />
+        //
       </Routes>
       {/* <Footer /> */}
     </BrowserRouter>
