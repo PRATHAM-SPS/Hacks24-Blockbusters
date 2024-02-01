@@ -43,7 +43,7 @@ function App() {
         <Route path="/dom" element={<Dom_To_Image state={state} />} />
         //
       </Routes>
-      <Footer />
+      {/* <Footer /> */}
     </BrowserRouter>
     </>
   )
