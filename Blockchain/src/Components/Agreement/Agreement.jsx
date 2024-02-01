@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import Button from "react-bootstrap/Button";
@@ -8,46 +8,70 @@ import { BiPaperPlane, BiCloudDownload } from "react-icons/bi";
 import html2canvas from "html2canvas";
 import jsPDF from "jspdf";
 
-function GenerateInvoice() {
-  const element = document.querySelector("#invoiceCapture");
+// const [image, setImage] = useState();
+import domtoimage from 'dom-to-image';
+//
 
-  html2canvas(element, { scrollY: -window.scrollY }).then((canvas) => {
-    const imgData = canvas.toDataURL("image/png", 1.0);
-    const pdf = new jsPDF({
-      orientation: "portrait",
-      unit: "pt",
-      format: [612, 792],
+//
+const capture =  () => {
+  const node = document.getElementById('invoiceCapture');
+
+  return domtoimage.toPng(node)
+    .then(function (dataUrl) {
+      // console.log(dataUrl);
+      return dataUrl; // Return the data URL
+    })
+    .catch(function (error) {
+      console.error('Error capturing the DOM to image:', error);
+      throw error; // Re-throw the error for handling
     });
+};
 
-    const imgWidth = 612;
-    const imgHeight = (canvas.height * imgWidth) / canvas.width;
+function GenerateInvoice() {
+   capture().then((himg) => { // Use the promise returned by capture
+    const element = document.querySelector("#invoiceCapture");
 
-    let position = 0;
-    let pageHeight = pdf.internal.pageSize.getHeight();
+    html2canvas(element, { scrollY: -window.scrollY }).then((canvas) => {
+      const imgData = canvas.toDataURL("image/png", 1.0);
+      // console.log(imgData,"imaggeeeeeeee")
+      const pdf = new jsPDF({
+        orientation: "portrait",
+        unit: "pt",
+        format: [612, canvas.height + 100],
+      });
 
-    while (position < imgHeight) {
-      const sliceHeight = Math.min(imgHeight - position, pageHeight);
-      pdf.addImage(
-        imgData,
-        "PNG",
-        0,
-        -position,
-        imgWidth,
-        imgHeight,
-        null,
-        "SLOW", // 'SLOW' option enables rendering the image with clipping
-        "MEDIUM",
-        0,
-        true
-      );
-      position += sliceHeight;
+      const imgWidth = 612;
+      const imgHeight = (canvas.height * imgWidth ) / canvas.width;
 
-      if (position < imgHeight) {
-        pdf.addPage();
+      let position = 0;
+      let pageHeight = pdf.internal.pageSize.getHeight();
+
+      while (position < imgHeight) {
+        const sliceHeight = Math.min(imgHeight - position, pageHeight);
+        pdf.addImage(
+          himg,
+          "PNG",
+          0,
+          -position,
+          imgWidth,
+          imgHeight,
+          null,
+          "SLOW",
+          "MEDIUM",
+          0,
+          true
+        );
+        position += sliceHeight;
+
+        if (position < imgHeight) {
+          pdf.addPage();
+        }
       }
-    }
 
-    pdf.save("invoice-001.pdf");
+      pdf.save("invoice-001.pdf");
+    });
+  }).catch((error) => {
+    console.error('Error generating invoice:', error);
   });
 }
 
@@ -94,7 +118,7 @@ class InvoiceModal extends React.Component {
                     <div>{this.props.info.billFromEmail || ""}</div>
                   </div>
                   <div className="text-end">
-                    <div className="fw-bold">Date Of Issue:</div>
+                    <div className="fw-bold">Date Of Issue:</div><br></br>
                     <div>{this.props.info.dateOfIssue || ""}</div>
                   </div>
                 </Col>
@@ -395,7 +419,10 @@ class InvoiceModal extends React.Component {
                   </tr>
                   <tr
                     style={{
-                      width: "5px",
+                      display: "flex",
+                      justifyContent: "center", // Horizontal centering
+                      alignItems: "center",     // Vertical centering
+                      width: "100%",            // Take full width of parent container
                       fontSize: "4px",
                       marginBottom: "50px",
                       alignmentBaseline: "center",
@@ -404,18 +431,19 @@ class InvoiceModal extends React.Component {
                     <img
                       src={`https://api.qrserver.com/v1/create-qr-code/?size=50x50&data=${this.props.info.qrcode}`}
                       alt="QR"
-                      width="200px"
-                      height="200px"
+                      width="150px"
+                      height="150px"
                       hidden={!this.props.isQr}
                     ></img>
+                    <br></br>
                   </tr>
                 </tbody>
               </Table>
             </div>
           </div>
           <div className="pb-4 px-4">
-            <Row>
-              <Col md={6}>
+            <Row className="justify-content-center">
+              <Col  md={6} className="d-flex justify-content-center">
                 <Button
                   variant="outline-primary"
                   className="d-block w-100 mt-3 mt-md-0"
