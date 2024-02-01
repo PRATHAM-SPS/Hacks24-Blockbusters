@@ -7,6 +7,10 @@ import Modal from "react-bootstrap/Modal";
 import { BiPaperPlane, BiCloudDownload } from "react-icons/bi";
 import html2canvas from "html2canvas";
 import jsPDF from "jspdf";
+import { create } from 'pinata-sdk';
+
+const pinataApiKey = '11ff62b0c280f5548bc9';
+const pinataApiSecret = '5e802c9c95f9f5799923d6481aa0c5166bfc1d7f591bd8ad39ab23037e68c84b';
 
 // const [image, setImage] = useState();
 import domtoimage from 'dom-to-image';
@@ -27,21 +31,70 @@ const capture =  () => {
     });
 };
 
+// function GenerateInvoice() {
+//    capture().then((himg) => { // Use the promise returned by capture
+//     const element = document.querySelector("#invoiceCapture");
+
+//     html2canvas(element, { scrollY: -window.scrollY }).then((canvas) => {
+//       const imgData = canvas.toDataURL("image/png", 1.0);
+//       // console.log(imgData,"imaggeeeeeeee")
+//       const pdf = new jsPDF({
+//         orientation: "portrait",
+//         unit: "pt",
+//         format: [612, 792],
+//       });
+
+//       const imgWidth = 612;
+//       const imgHeight = (canvas.height * imgWidth ) / canvas.width;
+
+//       let position = 0;
+//       let pageHeight = pdf.internal.pageSize.getHeight();
+
+//       while (position < imgHeight) {
+//         const sliceHeight = Math.min(imgHeight - position, pageHeight);
+//         pdf.addImage(
+//           himg,
+//           "PNG",
+//           0,
+//           -position,
+//           imgWidth,
+//           imgHeight,
+//           null,
+//           "SLOW",
+//           "MEDIUM",
+//           0,
+//           true
+//         );
+//         position += sliceHeight;
+
+//         if (position < imgHeight) {
+//           pdf.addPage();
+//         }
+//       }
+
+//       console.log("PDF DATA : ",pdf);
+
+//       pdf.save("invoice-001.pdf");
+//     });
+//   }).catch((error) => {
+//     console.error('Error generating invoice:', error);
+//   });
+// }
+
 function GenerateInvoice() {
-   capture().then((himg) => { // Use the promise returned by capture
+  capture().then((himg) => {
     const element = document.querySelector("#invoiceCapture");
 
     html2canvas(element, { scrollY: -window.scrollY }).then((canvas) => {
       const imgData = canvas.toDataURL("image/png", 1.0);
-      // console.log(imgData,"imaggeeeeeeee")
       const pdf = new jsPDF({
         orientation: "portrait",
         unit: "pt",
-        format: [612, 792],
+        format: [612, canvas.height + 100],
       });
 
       const imgWidth = 612;
-      const imgHeight = (canvas.height * imgWidth ) / canvas.width;
+      const imgHeight = (canvas.height * imgWidth) / canvas.width;
 
       let position = 0;
       let pageHeight = pdf.internal.pageSize.getHeight();
@@ -68,9 +121,21 @@ function GenerateInvoice() {
         }
       }
 
-      console.log("PDF DATA : ",pdf);
+      const pdfData = pdf.output('blob'); // Get PDF data as Blob
 
-      pdf.save("invoice-001.pdf");
+      // Upload to Pinata
+      const pinata = create(pinataApiKey, pinataApiSecret);
+      const options = {
+        pinataMetadata: {
+          name: 'invoice-001.pdf',
+        },
+      };
+
+      pinata.pinFileToIPFS(pdfData, options).then((response) => {
+        console.log("File uploaded to Pinata:", response);
+      }).catch((error) => {
+        console.error('Error uploading file to Pinata:', error);
+      });
     });
   }).catch((error) => {
     console.error('Error generating invoice:', error);
