@@ -37,7 +37,7 @@ function GenerateInvoice() {
       const pdf = new jsPDF({
         orientation: "portrait",
         unit: "pt",
-        format: [612, canvas.height + 100],
+        format: [612, 792],
       });
 
       const imgWidth = 612;
@@ -424,7 +424,7 @@ class InvoiceModal extends React.Component {
                       alignItems: "center",     // Vertical centering
                       width: "100%",            // Take full width of parent container
                       fontSize: "4px",
-                      marginBottom: "50px",
+                      marginBottom: "5px",
                       alignmentBaseline: "center",
                     }}
                   >
@@ -435,7 +435,21 @@ class InvoiceModal extends React.Component {
                       height="150px"
                       hidden={!this.props.isQr}
                     ></img>
-                    <br></br>
+                  </tr>
+                  <tr
+                    style={{
+                      display: "flex",
+                      justifyContent: "center", // Horizontal centering
+                      alignItems: "center",     // Vertical centering
+                      width: "100%",            // Take full width of parent container
+                      fontSize: "10px",
+                      marginBottom: "30px",
+                      alignmentBaseline: "center",
+                    }}
+                    
+                  ><b>Signed By Makkan</b>
+                  <br></br>
+                  <br></br>
                   </tr>
                 </tbody>
               </Table>

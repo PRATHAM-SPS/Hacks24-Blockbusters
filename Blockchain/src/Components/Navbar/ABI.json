@@ -376,6 +376,11 @@
 					},
 					{
 						"internalType": "uint256",
+						"name": "brokerCut",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
 						"name": "value",
 						"type": "uint256"
 					}
@@ -383,6 +388,19 @@
 				"internalType": "struct RealEstateTransaction.Transactions[]",
 				"name": "",
 				"type": "tuple[]"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "Goverment_of_India",
+		"outputs": [
+			{
+				"internalType": "address",
+				"name": "",
+				"type": "address"
 			}
 		],
 		"stateMutability": "view",
@@ -541,6 +559,11 @@
 				"internalType": "address",
 				"name": "broker",
 				"type": "address"
+			},
+			{
+				"internalType": "uint256",
+				"name": "brokerCut",
+				"type": "uint256"
 			},
 			{
 				"internalType": "uint256",
