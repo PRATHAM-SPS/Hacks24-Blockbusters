@@ -15,7 +15,7 @@ function Navbar({ saveState }) {
       });
       const contract = new web3.eth.Contract(
         ABI,
-        "0x9b16ae2A2d08d9496C94d7170a1eFECa5DeCd27C"
+        "0xb64852C4755977E9132Cc1bE8670E8609e77A5c1"
       );
       saveState({ web3: web3, contract: contract });
       setConnected(false);
