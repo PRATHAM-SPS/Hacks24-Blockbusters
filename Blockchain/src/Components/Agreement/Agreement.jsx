@@ -13,12 +13,12 @@ import domtoimage from 'dom-to-image';
 //
 
 //
-const capture = () => {
+const capture =  () => {
   const node = document.getElementById('invoiceCapture');
 
   return domtoimage.toPng(node)
     .then(function (dataUrl) {
-      console.log(dataUrl);
+      // console.log(dataUrl);
       return dataUrl; // Return the data URL
     })
     .catch(function (error) {
@@ -28,20 +28,20 @@ const capture = () => {
 };
 
 function GenerateInvoice() {
-  capture().then((himg) => { // Use the promise returned by capture
+   capture().then((himg) => { // Use the promise returned by capture
     const element = document.querySelector("#invoiceCapture");
 
     html2canvas(element, { scrollY: -window.scrollY }).then((canvas) => {
       const imgData = canvas.toDataURL("image/png", 1.0);
-      console.log(imgData,"imaggeeeeeeee")
+      // console.log(imgData,"imaggeeeeeeee")
       const pdf = new jsPDF({
         orientation: "portrait",
         unit: "pt",
-        format: [612, 792],
+        format: [612, canvas.height + 100],
       });
 
       const imgWidth = 612;
-      const imgHeight = (canvas.height * imgWidth) / canvas.width;
+      const imgHeight = (canvas.height * imgWidth ) / canvas.width;
 
       let position = 0;
       let pageHeight = pdf.internal.pageSize.getHeight();
@@ -118,7 +118,7 @@ class InvoiceModal extends React.Component {
                     <div>{this.props.info.billFromEmail || ""}</div>
                   </div>
                   <div className="text-end">
-                    <div className="fw-bold">Date Of Issue:</div>
+                    <div className="fw-bold">Date Of Issue:</div><br></br>
                     <div>{this.props.info.dateOfIssue || ""}</div>
                   </div>
                 </Col>
@@ -419,7 +419,10 @@ class InvoiceModal extends React.Component {
                   </tr>
                   <tr
                     style={{
-                      width: "5px",
+                      display: "flex",
+                      justifyContent: "center", // Horizontal centering
+                      alignItems: "center",     // Vertical centering
+                      width: "100%",            // Take full width of parent container
                       fontSize: "4px",
                       marginBottom: "50px",
                       alignmentBaseline: "center",
@@ -428,18 +431,19 @@ class InvoiceModal extends React.Component {
                     <img
                       src={`https://api.qrserver.com/v1/create-qr-code/?size=50x50&data=${this.props.info.qrcode}`}
                       alt="QR"
-                      width="200px"
-                      height="200px"
+                      width="150px"
+                      height="150px"
                       hidden={!this.props.isQr}
                     ></img>
+                    <br></br>
                   </tr>
                 </tbody>
               </Table>
             </div>
           </div>
           <div className="pb-4 px-4">
-            <Row>
-              <Col md={6}>
+            <Row className="justify-content-center">
+              <Col  md={6} className="d-flex justify-content-center">
                 <Button
                   variant="outline-primary"
                   className="d-block w-100 mt-3 mt-md-0"
