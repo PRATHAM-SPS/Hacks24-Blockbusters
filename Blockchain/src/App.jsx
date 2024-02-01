@@ -39,7 +39,7 @@ function App() {
         <Route path="/my_properties" element={<My_Properties state={state} />} />
         <Route path="/predict" element={<Predict state={state} />} />
       </Routes>
-      <Footer />
+      {/* <Footer /> */}
     </BrowserRouter>
     </>
   )

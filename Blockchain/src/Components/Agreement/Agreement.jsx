@@ -446,8 +446,8 @@ class InvoiceModal extends React.Component {
                       marginBottom: "30px",
                       alignmentBaseline: "center",
                     }}
-                    
-                  ><b>Signed By Makkan</b>
+                    >
+                    <div  hidden={!this.props.isQr}><b>Signed By <h1 className="m-0 text-primary">Makaan</h1> </b></div>    
                   <br></br>
                   <br></br>
                   </tr>
